@@ -1,4 +1,9 @@
 [core]
-    remote = dvc_remote
+    remote = handover-prediction-remote
 ['remote "dvc_remote"']
     url = ../dataset
+['remote "myremote"']
+    url = gdrive://1JdxDN7dptWmGwzOfSEKd6TxK3Yau6G7E
+['remote "handover-prediction-remote"']
+    url = gdrive://1JdxDN7dptWmGwzOfSEKd6TxK3Yau6G7E
+    gdrive_use_service_account = false
