@@ -1,7 +1,0 @@
-# temp
-Config dvc : 
-dvc init 
-git add .dvc 
-git commit -m "dvc initial commit"
-dvc remote add dvc_remote <whatever path you store the dataset in>
-dvc remote default dvc_remote
