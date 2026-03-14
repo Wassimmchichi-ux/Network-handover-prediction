@@ -7,3 +7,5 @@
 ['remote "handover-prediction-remote"']
     url = gdrive://1JdxDN7dptWmGwzOfSEKd6TxK3Yau6G7E
     gdrive_use_service_account = false
+    gdrive_client_id = 988029979651-osu6cundmikei45d7pcor1vqc0ff5o0r.apps.googleusercontent.com
+    gdrive_client_secret = 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
