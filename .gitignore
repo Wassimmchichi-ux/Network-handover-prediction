@@ -1,0 +1,66 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Models
+*.h5
+*.keras
+*.pkl
+
+# MLflow
+mlflow/
+
+# Data
+data/
+dataset/
+
+# VS Code
+.vscode/
+
+# Temporary files
+*.tmp
+*.bak
+
+
+# deprecated 
+to_ignore/
+
+# simulation
+simulation/casablanca_raytracing/combined_hybrid_drone_positions_sionna.csv
+simulation/casablanca_raytracing/hybrid_drone_positions_sionna.csv
+simulation/casablanca_raytracing/hybrid_handover_dataset_sionna.csv
+simulation/casablanca_raytracing/batches
+simulation/hexagonal_simulation/hybrid_drone_positions_sionna.csv
+simulation/hexagonal_simulation/hybrid_handover_dataset_sionna.csv
+simulation/to movve from here
+
+# notebook for scalabitility
+notebooks/scalability_notebooks
+
+# documentation
+basic_documentation
+
+
+handover-prediction-mlflow-server-key.pem
+
+
+tb_logs
+
+datasetdataset/
+models/
+simulation/
+tb_logs/
+*.pkl
+*.h5
+*.pt

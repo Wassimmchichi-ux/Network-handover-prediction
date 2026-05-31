@@ -1,0 +1,45 @@
+{
+  "experiment": "Ray-ID CrossFormer",
+  "created": "2026-05-31T10:20:36.906715",
+  "notebook": "notebooks/modeling/07_ray_id_crossformer.ipynb",
+  "architecture": "Temporal RF encoder + cell ID embeddings + serving flag + masked cell self-attention + horizon cross-attention",
+  "cache": "/home/wassimmchichi/Downloads/Handover_projects/dataset/ray_tracing_finetune_cache",
+  "previous_finetuned_metrics": {
+    "finetuned_top1": 0.2811613774476705,
+    "finetuned_top3": 0.7254557731262661,
+    "finetuned_top5": 0.9856853477380149,
+    "finetuned_rsrp_mae_dbm": 8.10690689086914
+  },
+  "val_metrics": {
+    "val_top1": 0.599594868332208,
+    "val_top3": 0.9085752869682647,
+    "val_top5": 0.987981093855503
+  },
+  "test_metrics": {
+    "test_top1": 0.575962187711006,
+    "test_top3": 0.9087103308575287,
+    "test_top5": 0.9886563133018231
+  },
+  "hp": {
+    "BATCH_SIZE": 64,
+    "EPOCHS": 90,
+    "LR": 0.0003,
+    "MIN_LR": 2e-06,
+    "PATIENCE": 14,
+    "D_MODEL": 128,
+    "ID_DIM": 32,
+    "GRU_UNITS": 96,
+    "N_HEADS": 4,
+    "FF_DIM": 256,
+    "N_BLOCKS": 3,
+    "DROPOUT": 0.18,
+    "FOCAL_GAMMA": 1.5,
+    "FOCAL_ALPHA": 0.75,
+    "LABEL_SMOOTHING": 0.01
+  },
+  "vocab_size": 172,
+  "train_id_count": 171,
+  "best_checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_ray_id_crossformer.keras",
+  "final_model": "/home/wassimmchichi/Downloads/Handover_projects/models/ray_id_crossformer_final.keras",
+  "metrics_dir": "/home/wassimmchichi/Downloads/Handover_projects/metrics/ray_id_crossformer"
+}

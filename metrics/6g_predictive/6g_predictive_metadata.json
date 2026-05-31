@@ -1,0 +1,50 @@
+{
+  "experiment": "Experiment 4 \u2014 6G Predictive Optimal Cell Selection",
+  "created": "2026-05-30T13:18:13.407926",
+  "notebook": "notebooks/modeling/04_6g_predictive.ipynb",
+  "target_column": "optimal_cell_idx_in_k",
+  "best_checkpoint.keras": "/home/wassimmchichi/Downloads/Handover_projects/models/best_6g_predictive.keras",
+  "final_model": "/home/wassimmchichi/Downloads/Handover_projects/models/6g_predictive_final.keras",
+  "test_top1_acc": 0.5493,
+  "test_top3_acc": 0.8547,
+  "test_top5_acc": 0.947,
+  "test_rsrp_mae_dbm": 5.229,
+  "best_epoch.keras": 19,
+  "feature_names": [
+    "nb_rsrp",
+    "nb_sinr",
+    "nb_load"
+  ],
+  "hyperparams": {
+    "MAX_CELLS": 10,
+    "OBS_STEPS": 200,
+    "N_FEATS": 4,
+    "LAT_STEPS": 0,
+    "TGT_STEPS": 5,
+    "LAMBDA_CLS": 1.0,
+    "LAMBDA_REG": 0.7,
+    "FOCAL_GAMMA": 2.0,
+    "FOCAL_ALPHA": 0.25,
+    "LSTM_UNITS": 256,
+    "PHI_DIM": 64,
+    "N_HEADS": 2,
+    "MHA_KEY_DIM": 16,
+    "FF_DIM": 128,
+    "N_ST_BLOCKS": 2,
+    "DROPOUT": 0.3781683370465745,
+    "BATCH_SIZE": 64,
+    "EPOCHS": 60,
+    "LR_INIT": 0.001682861439081382,
+    "LR_WARMUP_EP": 5,
+    "LR_DECAY_EP": 25
+  },
+  "improvement_vs_57": -0.0207,
+  "paths": {
+    "raw_csv": "/home/wassimmchichi/Downloads/Handover_projects/dataset/raw/handover_dataset.csv",
+    "cache_6g": "/home/wassimmchichi/Downloads/Handover_projects/dataset/6g_cache",
+    "models": "/home/wassimmchichi/Downloads/Handover_projects/models",
+    "metrics": "/home/wassimmchichi/Downloads/Handover_projects/metrics/6g_predictive",
+    "tb_logs": "/home/wassimmchichi/Downloads/Handover_projects/tb_logs/6g_predictive",
+    "mlruns": "/home/wassimmchichi/Downloads/Handover_projects/mlflow/mlruns"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "created": "2026-05-30T08:34:01.371499",
+  "notebook": "notebooks/modeling/01_temporal_deepset.ipynb",
+  "best_checkpoint.keras": "/home/wassimmchichi/Downloads/Handover_projects/models/best_temporal_deepset.keras",
+  "final_model": "/home/wassimmchichi/Downloads/Handover_projects/models/temporal_deepset_final.keras",
+  "test_top1_acc": 0.9982,
+  "test_top3_acc": 1.0,
+  "test_top5_acc": 1.0,
+  "best_val_score.keras": 1.0,
+  "best_epoch.keras": 1,
+  "loss_function": "FocalLoss",
+  "hyperparams": {
+    "MAX_CELLS": 10,
+    "OBS_STEPS": 25,
+    "N_FEATS": 3,
+    "LOSS_TYPE": "focal",
+    "FOCAL_GAMMA": 2.0,
+    "FOCAL_ALPHA": 0.25,
+    "LABEL_SMOOTH": 0.1,
+    "PHI_LAYERS": 2,
+    "LSTM_UNITS": 64,
+    "PHI_DIM": 64,
+    "DROPOUT": 0.25,
+    "BATCH_SIZE": 128,
+    "EPOCHS": 60,
+    "LR_INIT": 0.001,
+    "LR_WARMUP_EP": 4,
+    "LR_DECAY_EP": 20
+  },
+  "paths": {
+    "data": "/home/wassimmchichi/Downloads/Handover_projects/dataset/temporal_deepset_cache",
+    "models": "/home/wassimmchichi/Downloads/Handover_projects/models",
+    "tb_logs": "/home/wassimmchichi/Downloads/Handover_projects/tb_logs/deepset",
+    "metrics": "/home/wassimmchichi/Downloads/Handover_projects/metrics/temporal_deepset",
+    "mlruns": "/home/wassimmchichi/Downloads/Handover_projects/mlflow/mlruns"
+  },
+  "timing": {
+    "sample_rate_s": 0.2,
+    "obs_s": 5.0,
+    "latency_s": 1.0,
+    "target_s": 1.0
+  }
+}

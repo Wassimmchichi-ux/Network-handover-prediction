@@ -1,0 +1,64 @@
+{
+  "created": "2026-05-30T09:25:50.810827",
+  "notebook": "notebooks/modeling/01_temporal_deepset_production.ipynb",
+  "architecture": "SpatioTemporalDeepSet",
+  "best_checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_st_deepset.keras",
+  "final_model": "/home/wassimmchichi/Downloads/Handover_projects/models/st_deepset_final.keras",
+  "test_now_top1": 1.0,
+  "test_now_top3": 1.0,
+  "test_now_top5": 1.0,
+  "test_fut_avg_top1": 0.5613,
+  "test_rsrp_mae": 5.5563,
+  "test_sinr_mae": 5.1447,
+  "test_load_mae": 0.0716,
+  "step_fut_top1": {
+    "t+1": 0.6498,
+    "t+2": 0.5794,
+    "t+3": 0.5426,
+    "t+4": 0.5229,
+    "t+5": 0.512
+  },
+  "best_val_score": 0.5284,
+  "best_epoch": 4,
+  "loss_functions": {
+    "cell_now": "focal_g2.0_a0.25",
+    "cell_future": "temporal_focal_g2.0_a0.25",
+    "sig_future": "huber_d1.0"
+  },
+  "hyperparams": {
+    "MAX_CELLS": 10,
+    "OBS_STEPS": 200,
+    "N_FEATS": 5,
+    "PRED_STEPS": 5,
+    "LOSS_TYPE": "focal",
+    "FOCAL_GAMMA": 2.0,
+    "FOCAL_ALPHA": 0.25,
+    "LABEL_SMOOTH": 0.1,
+    "REG_WEIGHT": 0.15,
+    "FUTURE_WEIGHT": 2,
+    "HUBER_DELTA": 1.0,
+    "LSTM_UNITS": 128,
+    "PHI_DIM": 64,
+    "PHI_LAYERS": 2,
+    "DROPOUT": 0.25,
+    "DECODER_UNITS": 256,
+    "ATTEND_DIM": 128,
+    "BATCH_SIZE": 64,
+    "EPOCHS": 60,
+    "LR_INIT": 0.001,
+    "LR_WARMUP_EP": 4,
+    "LR_DECAY_EP": 20
+  },
+  "paths": {
+    "data": "/home/wassimmchichi/Downloads/Handover_projects/dataset/temporal_deepset_production_cache",
+    "models": "/home/wassimmchichi/Downloads/Handover_projects/models",
+    "tb_logs": "/home/wassimmchichi/Downloads/Handover_projects/tb_logs/deepset_prod",
+    "metrics": "/home/wassimmchichi/Downloads/Handover_projects/metrics/Temporal_deepset_production",
+    "mlruns": "/home/wassimmchichi/Downloads/Handover_projects/mlflow/mlruns"
+  },
+  "timing": {
+    "sample_rate_s": 0.2,
+    "obs_s": 40.0,
+    "forecast_s": 1.0
+  }
+}

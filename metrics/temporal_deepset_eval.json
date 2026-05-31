@@ -1,0 +1,6 @@
+{
+  "top1_acc": 0.9982286634460548,
+  "n_test": 12420,
+  "label_mode": "optimal",
+  "model": "models/best_temporal_deepset.keras"
+}

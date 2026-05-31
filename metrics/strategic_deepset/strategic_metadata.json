@@ -1,0 +1,45 @@
+{
+  "experiment": "Exp 6 \u2014 Strategic DeepSet (Context Injection)",
+  "created": "2026-05-30T11:13:35.657719",
+  "notebook": "notebooks/modeling/06_strategic_deepset.ipynb",
+  "sanitization": "success=1 OR class=0, ping_pong=0",
+  "global_state": "speed+dir_cos+dir_sin+cell_load+ho_class_onehot",
+  "loss": "1.0xFocal(g2.0)+0.5xHuber",
+  "imbalance": "Focal + sample_weights_3tuple",
+  "test_top1": 0.5135,
+  "test_top3": 0.8668,
+  "test_top5": 0.9559,
+  "test_rsrp_mae_dbm": 4.935,
+  "hyperparams": {
+    "MAX_CELLS": 10,
+    "OBS_STEPS": 25,
+    "F_CELL": 3,
+    "G_DIM": 9,
+    "LAMBDA_CLS": 1.0,
+    "LAMBDA_REG": 0.5,
+    "FOCAL_GAMMA": 2.0,
+    "FOCAL_ALPHA": 0.25,
+    "HUBER_DELTA": 1.0,
+    "LSTM_CELL": 64,
+    "LSTM_GLOB": 32,
+    "PHI_DIM": 64,
+    "RHO_DIMS": [
+      256,
+      128
+    ],
+    "DROPOUT": 0.2,
+    "BATCH_SIZE": 128,
+    "EPOCHS": 60,
+    "LR_INIT": 0.0005,
+    "LR_WARMUP_EP": 4,
+    "LR_DECAY_EP": 20
+  },
+  "paths": {
+    "raw_csv": "/home/wassimmchichi/Downloads/Handover_projects/dataset/raw/handover_dataset.csv",
+    "cache": "/home/wassimmchichi/Downloads/Handover_projects/dataset/strategic_cache",
+    "models": "/home/wassimmchichi/Downloads/Handover_projects/models",
+    "metrics": "/home/wassimmchichi/Downloads/Handover_projects/metrics/strategic_deepset",
+    "tb_logs": "/home/wassimmchichi/Downloads/Handover_projects/tb_logs/strategic_deepset",
+    "mlruns": "/home/wassimmchichi/Downloads/Handover_projects/mlflow/mlruns"
+  }
+}

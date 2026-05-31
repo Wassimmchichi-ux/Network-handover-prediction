@@ -1,0 +1,163 @@
+{
+  "experiment": "SOTA ray-tracing fine-tuning",
+  "created": "2026-05-31T04:53:02.877386",
+  "notebook": "notebooks/modeling/06_sota_ray_tracing_finetuning.ipynb",
+  "documentation_source": "/home/wassimmchichi/Downloads/Handover_projects/basic_documentation/explainability_and_finetuning.md",
+  "ray_dataset": "/home/wassimmchichi/Downloads/Handover_projects/dataset/raw/handover_dataset_ray_tracing.csv",
+  "source_model": "mtl_transformer",
+  "source_checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_mtl_transformer.keras",
+  "source_metadata": "/home/wassimmchichi/Downloads/Handover_projects/metrics/mtl_transformer/transformer_metadata.json",
+  "best_checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_sota_ray_finetuned.keras",
+  "final_model": "/home/wassimmchichi/Downloads/Handover_projects/models/sota_ray_finetuned_final.keras",
+  "baseline_metrics": {
+    "baseline_top1": 0.21404456448345713,
+    "baseline_top3": 0.638487508440243,
+    "baseline_top5": 0.9832545577312627,
+    "baseline_rsrp_mae_dbm": 8.54693603515625
+  },
+  "finetuned_metrics": {
+    "finetuned_top1": 0.2811613774476705,
+    "finetuned_top3": 0.7254557731262661,
+    "finetuned_top5": 0.9856853477380149,
+    "finetuned_rsrp_mae_dbm": 8.10690689086914
+  },
+  "calibrated_metrics": {
+    "calibrated_top1": 0.2811613774476705,
+    "calibrated_top3": 0.7254557731262661,
+    "calibrated_top5": 0.9856853477380149,
+    "calibrated_rsrp_mae_dbm": 8.10690689086914
+  },
+  "temperature": 1.1,
+  "hp": {
+    "MAX_CELLS": 10,
+    "TGT_STEPS": 5,
+    "LAT_STEPS": 0,
+    "N_FEATS": 4,
+    "BATCH_SIZE": 64,
+    "HEAD_EPOCHS": 25,
+    "UPPER_EPOCHS": 25,
+    "FULL_EPOCHS": 15,
+    "HEAD_LR": 0.0001,
+    "UPPER_LR": 5e-05,
+    "FULL_LR": 1e-05,
+    "FOCAL_GAMMA": 2.0,
+    "FOCAL_ALPHA": 0.25,
+    "LABEL_SMOOTHING": 0.02,
+    "LAMBDA_CLS": 1.0,
+    "LAMBDA_REG": 0.5,
+    "PATIENCE": 7,
+    "OBS_STEPS": 25
+  },
+  "cache_meta": {
+    "created": "2026-05-31T04:50:50.477273",
+    "source_csv": "/home/wassimmchichi/Downloads/Handover_projects/dataset/raw/handover_dataset_ray_tracing.csv",
+    "selected_source_model": "mtl_transformer",
+    "selected_checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_mtl_transformer.keras",
+    "ue_split": {
+      "train": [
+        "MA_UE_0004",
+        "MA_UE_0002",
+        "MA_UE_0001"
+      ],
+      "val": [
+        "MA_UE_0003"
+      ],
+      "test": [
+        "MA_UE_0005"
+      ]
+    },
+    "hp": {
+      "MAX_CELLS": 10,
+      "TGT_STEPS": 5,
+      "LAT_STEPS": 0,
+      "N_FEATS": 4,
+      "BATCH_SIZE": 64,
+      "HEAD_EPOCHS": 25,
+      "UPPER_EPOCHS": 25,
+      "FULL_EPOCHS": 15,
+      "HEAD_LR": 0.0001,
+      "UPPER_LR": 5e-05,
+      "FULL_LR": 1e-05,
+      "FOCAL_GAMMA": 2.0,
+      "FOCAL_ALPHA": 0.25,
+      "LABEL_SMOOTHING": 0.02,
+      "LAMBDA_CLS": 1.0,
+      "LAMBDA_REG": 0.5,
+      "PATIENCE": 7,
+      "OBS_STEPS": 25
+    },
+    "feature_names": [
+      "nb_rsrp",
+      "nb_sinr",
+      "nb_load",
+      "zero_anchor"
+    ],
+    "labeling": "candidate axis is horizon-target union plus anchor neighbours, shuffled per window; y remapped from optimal_cell_id"
+  },
+  "candidate_ranking": [
+    {
+      "name": "temporal_deepset",
+      "family": "temporal_deepset_baseline",
+      "target": "current_or_easy_ranked_label",
+      "score": 0.9982,
+      "obs_steps": 25,
+      "n_feats": 3,
+      "checkpoint_exists": true,
+      "metadata": "/home/wassimmchichi/Downloads/Handover_projects/metrics/temporal_deepset/temporal_deepset_metadata.json",
+      "checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_temporal_deepset.keras"
+    },
+    {
+      "name": "temporal_deepset_production",
+      "family": "spatiotemporal_deepset",
+      "target": "future_optimal_cell",
+      "score": 0.5613,
+      "obs_steps": 200,
+      "n_feats": 5,
+      "checkpoint_exists": true,
+      "metadata": "/home/wassimmchichi/Downloads/Handover_projects/metrics/Temporal_deepset_production/st_deepset_metadata.json",
+      "checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/models_deprecated/best_st_deepset.keras"
+    },
+    {
+      "name": "mtl_transformer",
+      "family": "set_transformer",
+      "target": "multi_horizon_optimal_cell",
+      "score": 0.5579,
+      "obs_steps": 25,
+      "n_feats": 4,
+      "checkpoint_exists": true,
+      "metadata": "/home/wassimmchichi/Downloads/Handover_projects/metrics/mtl_transformer/transformer_metadata.json",
+      "checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_mtl_transformer.keras"
+    },
+    {
+      "name": "6g_predictive",
+      "family": "set_transformer",
+      "target": "multi_horizon_optimal_cell",
+      "score": 0.5493,
+      "obs_steps": 200,
+      "n_feats": 4,
+      "checkpoint_exists": true,
+      "metadata": "/home/wassimmchichi/Downloads/Handover_projects/metrics/6g_predictive/6g_predictive_metadata.json",
+      "checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/best_6g_predictive.keras"
+    },
+    {
+      "name": "strategic_deepset",
+      "family": "strategic_deepset",
+      "target": "multi_horizon_optimal_cell",
+      "score": 0.5135,
+      "obs_steps": 25,
+      "n_feats": 3,
+      "checkpoint_exists": true,
+      "metadata": "/home/wassimmchichi/Downloads/Handover_projects/metrics/strategic_deepset/strategic_metadata.json",
+      "checkpoint": "/home/wassimmchichi/Downloads/Handover_projects/models/models_deprecated/best_strategic_deepset.keras"
+    }
+  ],
+  "artifacts": {
+    "ray_csv": "/home/wassimmchichi/Downloads/Handover_projects/dataset/raw/handover_dataset_ray_tracing.csv",
+    "doc": "/home/wassimmchichi/Downloads/Handover_projects/basic_documentation/explainability_and_finetuning.md",
+    "cache": "/home/wassimmchichi/Downloads/Handover_projects/dataset/ray_tracing_finetune_cache",
+    "models": "/home/wassimmchichi/Downloads/Handover_projects/models",
+    "metrics": "/home/wassimmchichi/Downloads/Handover_projects/metrics/ray_tracing_finetune",
+    "tb_logs": "/home/wassimmchichi/Downloads/Handover_projects/tb_logs/ray_tracing_finetune",
+    "mlruns": "/home/wassimmchichi/Downloads/Handover_projects/mlflow/mlruns"
+  }
+}
