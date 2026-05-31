@@ -1,0 +1,14 @@
+name: sionna-env
+channels:
+  - conda-forge
+  - nvidia
+  - defaults
+
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - pip
+  - pip:
+      - tensorflow==2.15
+      - sionna

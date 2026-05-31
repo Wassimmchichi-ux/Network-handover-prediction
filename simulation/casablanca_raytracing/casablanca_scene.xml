@@ -1,0 +1,21 @@
+<scene version='2.1.0'>
+    <bsdf type='diffuse' id='itu_concrete'>
+        <reflectance type='rgb' value='0.5, 0.5, 0.5'/>
+    </bsdf>
+    <bsdf type='dielectric' id='itu_glass'>
+        <float name='int_ior' value='1.5'/>
+    </bsdf>
+
+    <shape type='obj' id='casablanca_map'>
+        <string name='filename' value='CasaFinance.obj'/>
+        <ref id='itu_concrete'/>
+    </shape>
+
+    <shape type='rectangle' id='ground'>
+        <transform name='to_world'>
+            <scale value='10000, 10000, 1'/>
+            <rotate x='1' angle='-90'/>
+        </transform>
+        <ref id='itu_concrete'/>
+    </shape>
+</scene>
