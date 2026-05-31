@@ -122,7 +122,7 @@ Note: training/inference requires TensorFlow (`tensorflow-cpu` on edge CPU).
 
 For detailed guides on how to export the Blender CFC meshes, configure the load-aware drone strategy, or interface the containerized ONNX model with a live gNodeB Centralized Unit Control Plane (CU-CP), please visit our comprehensive documentation portal:
 
-👉 **[Read the Docs Configuration & Deployment Manual](https://www.google.com/search?q=https://your-repo.readthedocs.io/)**
+👉 **[Read the Docs Configuration & Deployment Manual](https://network-handover-prediction.readthedocs.io/)**
 
 ---
 
