@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Training Reference &mdash; AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=299da549" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine" href="deployement.html" />
+    <link rel="prev" title="Model Architecture Reference" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset Documentation: Geo-Context Aware Predictive Handover Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Model Architecture Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Training Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-pipeline">1. Data Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#raw-data-sources">1.1 Raw Data Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ue-level-train-val-test-split">1.2 UE-Level Train/Val/Test Split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sliding-window-construction">1.3 Sliding Window Construction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#neighbor-axis-shuffling-anti-leakage">1.4 Neighbor-Axis Shuffling (Anti-Leakage)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#feature-schema">1.5 Feature Schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#loss-functions">2. Loss Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#focal-loss">2.1 Focal Loss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#auxiliary-regression-loss-huber-mse">2.2 Auxiliary Regression Loss (Huber / MSE)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#label-smoothing">2.3 Label Smoothing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#learning-rate-scheduling">3. Learning Rate Scheduling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#warmup-cosine-decay-exp-0106">3.1 Warmup + Cosine Decay (Exp 01–06)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reducelronplateau-earlystopping-exp-07-crossformer">3.2 ReduceLROnPlateau + EarlyStopping (Exp 07 — CrossFormer)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#training-infrastructure">4. Training Infrastructure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-framework">4.1 Hardware &amp; Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataset-caching">4.2 Dataset Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#callbacks">4.3 Callbacks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#experiment-training-details">5. Experiment Training Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exp-01-temporal-deepset-single-step-baseline">Exp 01 — Temporal DeepSet (Single-Step Baseline)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp-02-spatiotemporal-deepset-production">Exp 02 — SpatioTemporal DeepSet Production</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp-03-mtl-set-transformer">Exp 03 — MTL Set Transformer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp-04-6g-predictive-optuna-tuned">Exp 04 — 6G Predictive (Optuna-Tuned)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp-05-strategic-deepset-context-injection">Exp 05 — Strategic DeepSet (Context Injection)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp-06-ray-tracing-fine-tune-progressive-unfreezing">Exp 06 — Ray-Tracing Fine-Tune (Progressive Unfreezing)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exp-07-ray-id-crossformer-sota-production">Exp 07 — Ray-ID CrossFormer (SOTA / Production)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#evaluation-protocol">6. Evaluation Protocol</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#metrics">6.1 Metrics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-top-3-is-the-primary-production-metric">6.2 Why Top-3 Is the Primary Production Metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evaluation-script">6.3 Evaluation Script</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#per-cell-recall">6.4 Per-Cell Recall</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#production-source-modules">7. Production Source Modules</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deployement.html">5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Training Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/training.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="training-reference">
+<h1>Training Reference<a class="headerlink" href="#training-reference" title="Link to this heading"></a></h1>
+<p>This page describes the full training methodology applied across the experimentation pipeline: data preprocessing, loss functions, learning rate scheduling, evaluation protocol, and per-experiment training specifics. All <strong>production experiments (Exp 02–07) target 5-step future horizon prediction</strong>. Only Exp 01 is a single-step baseline.</p>
+<hr class="docutils" />
+<section id="data-pipeline">
+<h2>1. Data Pipeline<a class="headerlink" href="#data-pipeline" title="Link to this heading"></a></h2>
+<section id="raw-data-sources">
+<h3>1.1 Raw Data Sources<a class="headerlink" href="#raw-data-sources" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Dataset</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Hexagonal simulation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dataset/raw/handover_dataset.csv</span></code></p></td>
+<td><p>Large-scale UMi channel model dataset (primary training corpus)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ray-tracing simulation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dataset/raw/handover_dataset_ray_tracing.csv</span></code></p></td>
+<td><p>High-fidelity ray-tracing dataset (fine-tuning / Exp 06–07)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ue-level-train-val-test-split">
+<h3>1.2 UE-Level Train/Val/Test Split<a class="headerlink" href="#ue-level-train-val-test-split" title="Link to this heading"></a></h3>
+<p>All experiments use a <strong>UE-level split</strong> loaded from <code class="docutils literal notranslate"><span class="pre">dataset/processed/ue_split.json</span></code>. This prevents temporal leakage — a UE’s data appears in exactly one partition. Typical split ratios are 70/15/15.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># UE-level split prevents time leakage across train/val/test</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;dataset/processed/ue_split.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">ue_split</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">train_ues</span> <span class="o">=</span> <span class="n">ue_split</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span>   <span class="c1"># ~70% of UE trajectories</span>
+    <span class="n">val_ues</span>   <span class="o">=</span> <span class="n">ue_split</span><span class="p">[</span><span class="s2">&quot;val&quot;</span><span class="p">]</span>     <span class="c1"># ~15%</span>
+    <span class="n">test_ues</span>  <span class="o">=</span> <span class="n">ue_split</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">]</span>    <span class="c1"># ~15%  ← never seen during training</span>
+</pre></div>
+</div>
+</section>
+<section id="sliding-window-construction">
+<h3>1.3 Sliding Window Construction<a class="headerlink" href="#sliding-window-construction" title="Link to this heading"></a></h3>
+<p>Each sample is a sliding window of <code class="docutils literal notranslate"><span class="pre">OBS_STEPS</span></code> consecutive timesteps (sampled every 200 ms):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ t-(T-1)  ...  t-1  t ]  ──►  Predict optimal cell at  [ t+1, t+2, t+3, t+4, t+5 ]
+</pre></div>
+</div>
+<p>The window shape is <code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">T,</span> <span class="pre">F)</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">MAX_CELLS</span> <span class="pre">=</span> <span class="pre">10</span></code> — padded candidate cell set</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">=</span> <span class="pre">OBS_STEPS</span></code> — 25 or 200 timesteps depending on experiment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> — feature count (3–5 depending on experiment)</p></li>
+</ul>
+</section>
+<section id="neighbor-axis-shuffling-anti-leakage">
+<h3>1.4 Neighbor-Axis Shuffling (Anti-Leakage)<a class="headerlink" href="#neighbor-axis-shuffling-anti-leakage" title="Link to this heading"></a></h3>
+<p>A critical anti-leakage measure is applied to <strong>every sample</strong>: the <code class="docutils literal notranslate"><span class="pre">K</span></code> candidate cells are randomly permuted before caching, and the label is remapped accordingly. This prevents the model from learning the trivial shortcut of “index 0 is always optimal” (which was an artefact of score-sorted raw CSVs).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Applied per window in all production experiments</span>
+<span class="n">perm</span>  <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">MAX_CELLS</span><span class="p">)</span>
+<span class="n">X</span>     <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">perm</span><span class="p">]</span>          <span class="c1"># (K, T, F) shuffled</span>
+<span class="n">label</span> <span class="o">=</span> <span class="n">inv_perm</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>  <span class="c1"># label index remapped after shuffle</span>
+</pre></div>
+</div>
+</section>
+<section id="feature-schema">
+<h3>1.5 Feature Schema<a class="headerlink" href="#feature-schema" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Included in</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nb_rsrp</span></code></p></td>
+<td><p>Neighbor cell RSRP (dBm)</p></td>
+<td><p>All experiments</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nb_sinr</span></code></p></td>
+<td><p>Neighbor cell SINR (dB)</p></td>
+<td><p>All experiments</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nb_load</span></code></p></td>
+<td><p>Neighbor cell load (0–1)</p></td>
+<td><p>All experiments</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">zero_anchor</span></code></p></td>
+<td><p>LTE anchor serving-flag</p></td>
+<td><p>Exp 03, 04, 06</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">speed</span> <span class="pre">/</span> <span class="pre">dir_cos</span> <span class="pre">/</span> <span class="pre">dir_sin</span></code></p></td>
+<td><p>UE mobility state</p></td>
+<td><p>Exp 05</p></td>
+</tr>
+<tr class="row-odd"><td><p>Cell ID integers</p></td>
+<td><p>Discrete cell identifiers</p></td>
+<td><p>Exp 07 (ID embedding)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<hr class="docutils" />
+<section id="loss-functions">
+<h2>2. Loss Functions<a class="headerlink" href="#loss-functions" title="Link to this heading"></a></h2>
+<section id="focal-loss">
+<h3>2.1 Focal Loss<a class="headerlink" href="#focal-loss" title="Link to this heading"></a></h3>
+<p>All classification heads use Focal Loss to handle class imbalance across the 172 candidate cells:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{\text{focal}}(p_t) = -\alpha_t (1 - p_t)^\gamma \log(p_t)\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> focuses on the minority class (positive handover events)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> down-weights easy (well-classified) samples</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Experiment</p></th>
+<th class="head"><p>γ</p></th>
+<th class="head"><p>α</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Exp 01–05</p></td>
+<td><p>2.0</p></td>
+<td><p>0.25</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exp 06 (fine-tune)</p></td>
+<td><p>2.0</p></td>
+<td><p>0.25</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Exp 07 (CrossFormer)</strong></p></td>
+<td><p><strong>1.5</strong></p></td>
+<td><p><strong>0.75</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="auxiliary-regression-loss-huber-mse">
+<h3>2.2 Auxiliary Regression Loss (Huber / MSE)<a class="headerlink" href="#auxiliary-regression-loss-huber-mse" title="Link to this heading"></a></h3>
+<p>Multi-task experiments (03, 04, 05) add a signal regression head with a Huber or MSE loss:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L}_{\text{total}} = \lambda_{\text{cls}} \cdot \mathcal{L}_{\text{focal}} + \lambda_{\text{reg}} \cdot \mathcal{L}_{\text{huber}}\]</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Experiment</p></th>
+<th class="head"><p>λ_cls</p></th>
+<th class="head"><p>λ_reg</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Exp 03</p></td>
+<td><p>1.0</p></td>
+<td><p>0.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exp 04</p></td>
+<td><p>1.0</p></td>
+<td><p>0.7</p></td>
+</tr>
+<tr class="row-even"><td><p>Exp 05</p></td>
+<td><p>1.0</p></td>
+<td><p>0.5</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="label-smoothing">
+<h3>2.3 Label Smoothing<a class="headerlink" href="#label-smoothing" title="Link to this heading"></a></h3>
+<p>Applied to the classification target to regularise overconfident predictions:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Experiment</p></th>
+<th class="head"><p>Label Smoothing</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Exp 01</p></td>
+<td><p>0.10</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exp 02</p></td>
+<td><p>0.10</p></td>
+</tr>
+<tr class="row-even"><td><p>Exp 06 (fine-tune)</p></td>
+<td><p>0.02</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Exp 07 (CrossFormer)</strong></p></td>
+<td><p><strong>0.01</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<hr class="docutils" />
+<section id="learning-rate-scheduling">
+<h2>3. Learning Rate Scheduling<a class="headerlink" href="#learning-rate-scheduling" title="Link to this heading"></a></h2>
+<section id="warmup-cosine-decay-exp-0106">
+<h3>3.1 Warmup + Cosine Decay (Exp 01–06)<a class="headerlink" href="#warmup-cosine-decay-exp-0106" title="Link to this heading"></a></h3>
+<p>A linear warmup phase is followed by cosine decay, providing stable early-epoch convergence and smooth annealing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Epochs 0 → LR_WARMUP_EP  : linear ramp from 0 → LR_INIT
+Epochs LR_WARMUP_EP → LR_DECAY_EP : cosine decay to LR_MIN
+Epochs LR_DECAY_EP → EPOCHS : flat at LR_MIN
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Experiment</p></th>
+<th class="head"><p>LR_INIT</p></th>
+<th class="head"><p>Warmup Epochs</p></th>
+<th class="head"><p>Decay Epochs</p></th>
+<th class="head"><p>Total Epochs</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Exp 01</p></td>
+<td><p>1e-3</p></td>
+<td><p>4</p></td>
+<td><p>20</p></td>
+<td><p>60</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exp 02</p></td>
+<td><p>1e-3</p></td>
+<td><p>4</p></td>
+<td><p>20</p></td>
+<td><p>60</p></td>
+</tr>
+<tr class="row-even"><td><p>Exp 03</p></td>
+<td><p>1e-3</p></td>
+<td><p>4</p></td>
+<td><p>20</p></td>
+<td><p>60</p></td>
+</tr>
+<tr class="row-odd"><td><p>Exp 04 (Optuna)</p></td>
+<td><p>1.68e-3</p></td>
+<td><p>5</p></td>
+<td><p>25</p></td>
+<td><p>60</p></td>
+</tr>
+<tr class="row-even"><td><p>Exp 05</p></td>
+<td><p>5e-4</p></td>
+<td><p>4</p></td>
+<td><p>20</p></td>
+<td><p>60</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reducelronplateau-earlystopping-exp-07-crossformer">
+<h3>3.2 ReduceLROnPlateau + EarlyStopping (Exp 07 — CrossFormer)<a class="headerlink" href="#reducelronplateau-earlystopping-exp-07-crossformer" title="Link to this heading"></a></h3>
+<p>The Ray-ID CrossFormer uses a simpler ReduceLROnPlateau callback with early stopping, more appropriate for the smaller ray-tracing dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ReduceLROnPlateau</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_loss&#39;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">min_lr</span><span class="o">=</span><span class="mf">2e-6</span><span class="p">)</span>
+<span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_top3_accuracy&#39;</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Initial LR</p></td>
+<td><p>3e-4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Min LR</p></td>
+<td><p>2e-6</p></td>
+</tr>
+<tr class="row-even"><td><p>Patience (early stop)</p></td>
+<td><p>14</p></td>
+</tr>
+<tr class="row-odd"><td><p>Total epochs</p></td>
+<td><p>90</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<hr class="docutils" />
+<section id="training-infrastructure">
+<h2>4. Training Infrastructure<a class="headerlink" href="#training-infrastructure" title="Link to this heading"></a></h2>
+<section id="hardware-framework">
+<h3>4.1 Hardware &amp; Framework<a class="headerlink" href="#hardware-framework" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Detail</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Framework</p></td>
+<td><p>Keras 3 / TensorFlow 2.x backend</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mixed precision</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float16</span></code> compute, <code class="docutils literal notranslate"><span class="pre">float32</span></code> weights (GPU)</p></td>
+</tr>
+<tr class="row-even"><td><p>Dataset API</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tf.data.Dataset</span></code> pipeline pinned to CPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>Experiment tracking</p></td>
+<td><p>MLflow (<code class="docutils literal notranslate"><span class="pre">mlflow/mlruns/</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>TensorBoard logs</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tb_logs/&lt;experiment&gt;/</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dataset-caching">
+<h3>4.2 Dataset Caching<a class="headerlink" href="#dataset-caching" title="Link to this heading"></a></h3>
+<p>All experiments pre-build a numpy cache to avoid repeated windowing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>dataset/
+├── temporal_deepset_cache/          # Exp 01
+├── temporal_deepset_production_cache/ # Exp 02
+├── mtl_cache/                       # Exp 03
+├── 6g_cache/                        # Exp 04
+├── strategic_cache/                 # Exp 05
+├── ray_tracing_finetune_cache/      # Exp 06–07
+└── processed/ue_split.json          # shared UE split
+</pre></div>
+</div>
+</section>
+<section id="callbacks">
+<h3>4.3 Callbacks<a class="headerlink" href="#callbacks" title="Link to this heading"></a></h3>
+<p>Every experiment uses the following standard callback set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="s1">&#39;models/best_&lt;exp&gt;.keras&#39;</span><span class="p">,</span>
+                <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;val_top3_accuracy&#39;</span><span class="p">,</span>    <span class="c1"># primary monitor</span>
+                <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="s1">&#39;tb_logs/&lt;exp&gt;/&#39;</span><span class="p">)</span>
+<span class="n">CSVLogger</span><span class="p">(</span><span class="s1">&#39;metrics/&lt;exp&gt;/training_log.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong><code class="docutils literal notranslate"><span class="pre">val_top3_accuracy</span></code> as the checkpoint monitor</strong> — Top-3 accuracy is used as the primary validation monitor because it is the most operationally relevant metric in production. The NR network uses the top-3 predicted candidates for X2/Xn preparation, so optimising for Top-3 directly aligns training with deployment objectives.</p>
+</div></blockquote>
+</section>
+</section>
+<hr class="docutils" />
+<section id="experiment-training-details">
+<h2>5. Experiment Training Details<a class="headerlink" href="#experiment-training-details" title="Link to this heading"></a></h2>
+<section id="exp-01-temporal-deepset-single-step-baseline">
+<h3>Exp 01 — Temporal DeepSet (Single-Step Baseline)<a class="headerlink" href="#exp-01-temporal-deepset-single-step-baseline" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>⚠️ This is the <strong>single-step selection</strong> experiment. The model predicts the best current cell. It is used as a <strong>proof-of-concept baseline</strong> and was the first modeling experimentation in this project. All subsequent experiments solve the harder 5-step future prediction problem.</p>
+</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>tda-handover<span class="w"> </span>python<span class="w"> </span>src/train_model.py<span class="w"> </span>--label<span class="w"> </span>optimal
+</pre></div>
+</div>
+<p><img alt="Temporal DeepSet Training" src="_images/temporal_deepset_training_curves.png" /></p>
+</section>
+<section id="exp-02-spatiotemporal-deepset-production">
+<h3>Exp 02 — SpatioTemporal DeepSet Production<a class="headerlink" href="#exp-02-spatiotemporal-deepset-production" title="Link to this heading"></a></h3>
+<p>First transition to <strong>5-step multi-horizon</strong> prediction. Uses a long 200-timestep observation window (40 seconds of history at 200 ms resolution) and a multi-task loss combining future cell classification and signal regression.</p>
+<p><img alt="Production DeepSet Training" src="_images/production_deepset_training_curves.png" /></p>
+<p><img alt="Future Step Accuracy" src="_images/future_step_accuracy.png" /></p>
+</section>
+<section id="exp-03-mtl-set-transformer">
+<h3>Exp 03 — MTL Set Transformer<a class="headerlink" href="#exp-03-mtl-set-transformer" title="Link to this heading"></a></h3>
+<p>Introduces self-attention over the cell dimension. RSRP regression diagnostic:</p>
+<p><img alt="RSRP Regression Diagnostic" src="_images/rsrp_regression_diagnostic.png" /></p>
+<p><img alt="MTL Training" src="_images/mtl_training_curves.png" /></p>
+</section>
+<section id="exp-04-6g-predictive-optuna-tuned">
+<h3>Exp 04 — 6G Predictive (Optuna-Tuned)<a class="headerlink" href="#exp-04-6g-predictive-optuna-tuned" title="Link to this heading"></a></h3>
+<p>Optuna runs 50 trials with Tree-structured Parzen Estimator (TPE) sampler to find optimal <code class="docutils literal notranslate"><span class="pre">LSTM_UNITS</span></code>, <code class="docutils literal notranslate"><span class="pre">N_HEADS</span></code>, <code class="docutils literal notranslate"><span class="pre">DROPOUT</span></code>, and <code class="docutils literal notranslate"><span class="pre">LR_INIT</span></code>. Best epoch: 19.</p>
+<p><img alt="6G Predictive Training" src="_images/6g_training_curves.png" /></p>
+</section>
+<section id="exp-05-strategic-deepset-context-injection">
+<h3>Exp 05 — Strategic DeepSet (Context Injection)<a class="headerlink" href="#exp-05-strategic-deepset-context-injection" title="Link to this heading"></a></h3>
+<p>Injects global UE context (<code class="docutils literal notranslate"><span class="pre">speed</span></code>, <code class="docutils literal notranslate"><span class="pre">dir_cos</span></code>, <code class="docutils literal notranslate"><span class="pre">dir_sin</span></code>, <code class="docutils literal notranslate"><span class="pre">cell_load</span></code>, <code class="docutils literal notranslate"><span class="pre">ho_class_onehot</span></code>) into the cell aggregation to make the model mobility-regime-aware.</p>
+<p><img alt="Strategic Training" src="_images/strategic_training_curves.png" /></p>
+</section>
+<section id="exp-06-ray-tracing-fine-tune-progressive-unfreezing">
+<h3>Exp 06 — Ray-Tracing Fine-Tune (Progressive Unfreezing)<a class="headerlink" href="#exp-06-ray-tracing-fine-tune-progressive-unfreezing" title="Link to this heading"></a></h3>
+<p>Three-phase progressive fine-tuning on the ray-tracing domain. Uses a temperature-scaled calibration (T=1.1) post-training.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Phase 1 (25 ep, LR=1e-4): head only   → val top-3 ↑
+Phase 2 (25 ep, LR=5e-5): upper blocks → continued improvement
+Phase 3 (15 ep, LR=1e-6): full model  → final adaptation
+</pre></div>
+</div>
+<p><img alt="Ray Fine-Tune Training" src="i_static/mage/ray_finetune_training_curves.png" /></p>
+</section>
+<section id="exp-07-ray-id-crossformer-sota-production">
+<h3>Exp 07 — Ray-ID CrossFormer (SOTA / Production)<a class="headerlink" href="#exp-07-ray-id-crossformer-sota-production" title="Link to this heading"></a></h3>
+<p>The production training run. Trained directly on the ray-tracing cache with cell-ID embeddings. Converges in ~60–70 effective epochs under early stopping.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Training (from project root, inside the tda-handover conda env)</span>
+conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>tda-handover<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>notebooks.modeling.07_ray_id_crossformer
+</pre></div>
+</div>
+<p><img alt="CrossFormer Training Curves" src="_images/ray_id_crossformer_training_curves.png" /></p>
+<p><img alt="CrossFormer Confusion Matrix" src="_images/ray_id_crossformer_confusion_matrix.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="evaluation-protocol">
+<h2>6. Evaluation Protocol<a class="headerlink" href="#evaluation-protocol" title="Link to this heading"></a></h2>
+<section id="metrics">
+<h3>6.1 Metrics<a class="headerlink" href="#metrics" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Formula</p></th>
+<th class="head"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Top-1 Accuracy</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Pr[\hat{y}_1 = y]\)</span></p></td>
+<td><p>Exact match — hardest metric</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Top-3 Accuracy</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Pr[y \in \{\hat{y}_1, \hat{y}_2, \hat{y}_3\}]\)</span></p></td>
+<td><p><strong>Primary production KPI</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Top-5 Accuracy</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\Pr[y \in \text{top-5}]\)</span></p></td>
+<td><p>Coverage ceiling</p></td>
+</tr>
+<tr class="row-odd"><td><p>RSRP MAE (dBm)</p></td>
+<td><p>$\text{E}[</p></td>
+<td><p>\hat{r} - r</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="why-top-3-is-the-primary-production-metric">
+<h3>6.2 Why Top-3 Is the Primary Production Metric<a class="headerlink" href="#why-top-3-is-the-primary-production-metric" title="Link to this heading"></a></h3>
+<p>In a live 5G NR deployment, the edge-AI inference does not issue a single hard handover command. Instead, it returns a <strong>ranked candidate list</strong> to the RAN controller (via X2/Xn interface), which then selects the best reachable candidate based on:</p>
+<ul class="simple">
+<li><p>live X2/Xn resource availability,</p></li>
+<li><p>QoS profile matching,</p></li>
+<li><p>load constraints on the candidate cell.</p></li>
+</ul>
+<p>This means the network can exploit the <strong>top-3 predicted candidates</strong>, not just the single best prediction. A Top-3 accuracy of <strong>90.87 %</strong> (CrossFormer) means the optimal target cell is presented in the candidate shortlist in 9 out of 10 handover events, essentially eliminating blind handover failures in production.</p>
+</section>
+<section id="evaluation-script">
+<h3>6.3 Evaluation Script<a class="headerlink" href="#evaluation-script" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Evaluate CrossFormer on ray-tracing test split</span>
+conda<span class="w"> </span>run<span class="w"> </span>-n<span class="w"> </span>tda-handover<span class="w"> </span>python<span class="w"> </span>src/evaluate_model.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/best_ray_id_crossformer.keras<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--label<span class="w"> </span>optimal
+</pre></div>
+</div>
+</section>
+<section id="per-cell-recall">
+<h3>6.4 Per-Cell Recall<a class="headerlink" href="#per-cell-recall" title="Link to this heading"></a></h3>
+<p>Per-cell recall plots expose which cells are systematically confused — useful for identifying coverage holes, highly loaded cells, or geo-clusters with ambiguous candidates:</p>
+<p><img alt="Temporal DeepSet Per-Cell Recall" src="_images/temporal_deepset_per_cell_recall.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="production-source-modules">
+<h2>7. Production Source Modules<a class="headerlink" href="#production-source-modules" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">src/production/</span></code> directory contains reusable Python modules that mirror notebook logic in a script-friendly, reproducible form:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Module</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">src/production/temporal_deepset_data.py</span></code></p></td>
+<td><p>Windowed cache builder + scaler for DeepSet experiments</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">src/production/temporal_deepset_model.py</span></code></p></td>
+<td><p>Keras model builder + loader (with custom <code class="docutils literal notranslate"><span class="pre">MaskedGlobalAveragePooling</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">src/production/temporal_deepset_decision.py</span></code></p></td>
+<td><p>TTT + margin + cooldown stability gate</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">src/production/mh_transformer_data.py</span></code></p></td>
+<td><p>Multi-horizon cache builder for transformer experiments</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">src/production/mh_transformer_model.py</span></code></p></td>
+<td><p>Multi-horizon transformer model builder</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">src/train_model.py</span></code></p></td>
+<td><p>Train TemporalDeepSet (single-step baseline)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">src/train_mh_transformer.py</span></code></p></td>
+<td><p>Train multi-horizon transformer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">src/evaluate_model.py</span></code></p></td>
+<td><p>Evaluate and write metrics JSON</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">src/inference.py</span></code></p></td>
+<td><p>Offline streaming inference + stability gate</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><strong>Inference entry point uses <code class="docutils literal notranslate"><span class="pre">models/best_ray_id_crossformer.keras</span></code></strong> as the default production model. The <code class="docutils literal notranslate"><span class="pre">src/inference.py</span></code> script runs per-UE rolling-window inference with the stability gate (TTT=3 steps, margin=0.15, cooldown=5 steps).</p>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Model Architecture Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deployement.html" class="btn btn-neutral float-right" title="5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, WASSIM MCHICHI, AOUTMANI MOHAMMED AMIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

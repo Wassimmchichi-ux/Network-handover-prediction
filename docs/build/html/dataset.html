@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dataset Documentation: Geo-Context Aware Predictive Handover Dataset &mdash; AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=299da549" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Model Architecture Reference" href="architecture.html" />
+    <link rel="prev" title="Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dataset Documentation: Geo-Context Aware Predictive Handover Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#executive-summary">1. Executive Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-simulation-entities-mechanics">2. Core Simulation Entities &amp; Mechanics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#antenna-densification-clustering-real-geo-context">2.1. Antenna Densification &amp; Clustering (Real Geo-Context)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cell-load-aware-uav-drone-control-system">2.2. Cell-Load Aware UAV Drone Control System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#the-4-stage-iterative-dataset-evolution">3. The 4-Stage Iterative Dataset Evolution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#version-1-3gpp-hardcoded-script-toy-dataset">Version 1: 3GPP Hardcoded Script (Toy Dataset)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-2-hybrid-script-ns3-sample-statistical-validation-failure">Version 2: Hybrid Script + NS3 Sample (Statistical Validation Failure)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-3-pure-ns-3-dataset-generation-imbalance-compute-bottlenecks">Version 3: Pure NS-3 Dataset Generation (Imbalance &amp; Compute Bottlenecks)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#version-4-the-production-pipeline-hybrid-framework">Version 4: The Production Pipeline (Hybrid Framework)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sub-dataset-a-hexagonal-simulation">Sub-Dataset A: <code class="docutils literal notranslate"><span class="pre">hexagonal_simulation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sub-dataset-b-ray-tracing-simulation">Sub-Dataset B: <code class="docutils literal notranslate"><span class="pre">ray_tracing_simulation</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#time-series-feature-schema">4. Time-Series Feature Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#feature-matrix-specification">4.1. Feature Matrix Specification</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Model Architecture Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployement.html">5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Dataset Documentation: Geo-Context Aware Predictive Handover Dataset</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dataset.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="dataset-documentation-geo-context-aware-predictive-handover-dataset">
+<h1>Dataset Documentation: Geo-Context Aware Predictive Handover Dataset<a class="headerlink" href="#dataset-documentation-geo-context-aware-predictive-handover-dataset" title="Link to this heading"></a></h1>
+<section id="executive-summary">
+<h2>1. Executive Summary<a class="headerlink" href="#executive-summary" title="Link to this heading"></a></h2>
+<p>Data generation has been the single most challenging milestone of this project. Evaluating predictive handover cell selection algorithms for 5G NSA-to-6G migration requires a highly specific dataset that combines real geographical context, time-series continuity, dynamic user mobility, and realistic physical layer propagation models capable of handling dual-connectivity.</p>
+<p>To achieve this, we developed a novel framework that mirrors a high-density urban environment: <strong>Casablanca Finance City (CFC), Morocco</strong>. The environment leverages real base station coordinates from OpenCellID, maps an E-UTRA-NR Dual Connectivity (EN-DC) architecture, incorporates a custom cell-load aware dynamic UAV drone control loop, and orchestrates user mobility through a hybrid simulation engine. This document charts our iterative journey across four distinct versions, highlighting the failures, bottlenecks, and the final state-of-the-art hybrid pipeline that made robust multi-layer time-series forecasting possible.</p>
+</section>
+<hr class="docutils" />
+<section id="core-simulation-entities-mechanics">
+<h2>2. Core Simulation Entities &amp; Mechanics<a class="headerlink" href="#core-simulation-entities-mechanics" title="Link to this heading"></a></h2>
+<section id="antenna-densification-clustering-real-geo-context">
+<h3>2.1. Antenna Densification &amp; Clustering (Real Geo-Context)<a class="headerlink" href="#antenna-densification-clustering-real-geo-context" title="Link to this heading"></a></h3>
+<p>To anchor our simulation in reality, we extracted real tower location data from the <strong>OpenCellID database for Morocco</strong>.</p>
+<ul class="simple">
+<li><p><strong>Target Area Selection:</strong> Through clustering and densification analysis of national tower deployments, <strong>Casablanca Finance City (CFC)</strong> was identified as the optimal location representing a high-density, heterogeneous urban deployment.</p></li>
+<li><p><strong>Pre-processing:</strong> The raw coordinates were cleaned, filtered for 5G NSA (EN-DC) deployment topologies, mapping LTE macro-anchors (Master Nodes) and densified to reflect dense 5G/6G small-cell overlays (Secondary Nodes).</p></li>
+</ul>
+</section>
+<section id="cell-load-aware-uav-drone-control-system">
+<h3>2.2. Cell-Load Aware UAV Drone Control System<a class="headerlink" href="#cell-load-aware-uav-drone-control-system" title="Link to this heading"></a></h3>
+<p>In addition to ground users, our dataset includes simulated Unmanned Aerial Vehicles (UAVs/Drones) behaving as dynamic users/relays. Their movement is not random; it is governed by an automated operational loop:</p>
+<ul class="simple">
+<li><p><strong>Weighted Centroid Guidance:</strong> Drones track the network’s operational conditions. The target trajectory coordinates are determined by calculating a geometric centroid weighted by the real-time <strong>dual-layer cell load</strong> (combining LTE anchor and 5G active resource utilization) of surrounding ground antennas.</p></li>
+<li><p><strong>Distance Penalization:</strong> The control loop applies a penalty function relative to the distance between the drone and active antennas to avoid extreme, energy-inefficient trajectories.</p></li>
+<li><p><strong>Control Formulation:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\mathbf{X}_{uav}(t+1) = f\left( \frac{\sum_{i=1}^{N} L_i(t) \cdot \mathbf{X}_i}{\sum_{i=1}^{N} L_i(t)} - \nabla P(\mathbf{D}) \right)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(L_i(t)\)</span> represents the aggregate dual-layer cell load of antenna <span class="math notranslate nohighlight">\(i\)</span> (MN/SN) at time <span class="math notranslate nohighlight">\(t\)</span>, <span class="math notranslate nohighlight">\(\mathbf{X}_i\)</span> is the antenna position, and <span class="math notranslate nohighlight">\(\nabla P(\mathbf{D})\)</span> is the distance-based spatial penalization gradient.</p>
+<p><img alt="alt text" src="_images/drone_controlle.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="the-4-stage-iterative-dataset-evolution">
+<h2>3. The 4-Stage Iterative Dataset Evolution<a class="headerlink" href="#the-4-stage-iterative-dataset-evolution" title="Link to this heading"></a></h2>
+<p>The creation of this dataset required overcoming multiple structural failures. Below is the detailed breakdown of the development lifecycle:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[v1: 3GPP Toy Script] ──&gt; [v2: Script + NS3 Sample] ──&gt; [v3: Pure NS3 Engine] ──&gt; [v4: Hybrid Production Pipeline]
+     (Too Simple)              (Stats Test Failed)         (Imbalance/CPU Bound)         (Hexagonal + Ray-Tracing)
+</pre></div>
+</div>
+<section id="version-1-3gpp-hardcoded-script-toy-dataset">
+<h3>Version 1: 3GPP Hardcoded Script (Toy Dataset)<a class="headerlink" href="#version-1-3gpp-hardcoded-script-toy-dataset" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Methodology:</strong> A standalone Python script designed to output KPI metrics based directly on closed-form 3GPP standard propagation equations for LTE and 5G bands.</p></li>
+<li><p><strong>Bottlenecks &amp; Failures:</strong> The resulting data was entirely deterministic and low-dimensional. It completely lacked the stochastic variance, multi-path fading, interlocking dual-connectivity dependencies, and complex user mobility profiles of real-world networks. It acted as a “toy dataset” and was useless for deep learning.</p></li>
+</ul>
+</section>
+<section id="version-2-hybrid-script-ns3-sample-statistical-validation-failure">
+<h3>Version 2: Hybrid Script + NS3 Sample (Statistical Validation Failure)<a class="headerlink" href="#version-2-hybrid-script-ns3-sample-statistical-validation-failure" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Methodology:</strong> In an attempt to add realism, we generated a small benchmark sample using the NS-3 (Network Simulator 3) EN-DC network stack and augmented it using our internal Python hardcoded script. We applied rigorous statistical integrity tests (e.g., distribution matching, correlation alignment) to check if the script could scale up the dataset.</p></li>
+<li><p><strong>Bottlenecks &amp; Failures:</strong> <strong>The majority of statistical tests failed.</strong> The Python script was mathematically too simplistic to mimic the intricate, stateful behavior of the NS-3 discrete-event network simulator (such as coupled LTE/5G MAC-layer scheduling overhead, EN-DC bearer splits, and protocol stack delays).</p></li>
+</ul>
+</section>
+<section id="version-3-pure-ns-3-dataset-generation-imbalance-compute-bottlenecks">
+<h3>Version 3: Pure NS-3 Dataset Generation (Imbalance &amp; Compute Bottlenecks)<a class="headerlink" href="#version-3-pure-ns-3-dataset-generation-imbalance-compute-bottlenecks" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Methodology:</strong> We abandoned the hardcoded scripts and moved the entire simulation infrastructure directly inside <strong>NS-3</strong>.</p></li>
+<li><p><strong>Bottlenecks &amp; Critical Failures:</strong> This version introduced two catastrophic blockers:</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>NS-3 System-Level Abstraction &amp; Artificial Event Sparsity</p></li>
+</ol>
+<p>As a system-level simulator, NS-3 fundamentally relies on abstracted, distance-smoothed statistical propagation models rather than environment-specific physical layer dynamics. Consequently, its simulated RF environment degrades predictably and smoothly. Because the simulation lacks authentic Line-of-Sight (LOS) to Non-Line-of-Sight (NLOS) transitions and sudden urban blockage effects, the signal rarely experienced the steep, realistic drops that trigger dual-connectivity handovers (MN/SN changes) in the real world.</p>
+<p>This architectural limitation resulted in an artificially low handover rate (e.g., ~0.7%), meaning handovers only occurred at extreme geometric cell edges. This simulator-induced sparsity created a severe class imbalance in our dataset, rendering traditional machine learning fixes useless:</p>
+<ul class="simple">
+<li><p>Focal Loss: Proved mathematically insufficient to overcome the severe classification bias during gradient descent.</p></li>
+<li><p>SMOTE (Synthetic Minority Over-sampling Technique): Proved fundamentally incompatible with our architecture. SMOTE interpolates between isolated feature vectors, which destroys the critical temporal continuity and sequential phase alignment of time-series data. It injected random noise into our signals, rendering sequential models (LSTMs/Transformers) unable to learn true pre-handover degradation signatures.</p></li>
+</ul>
+<ol class="arabic simple" start="2">
+<li><p><strong>Computational Complexity (“Time is Gold”):</strong> NS-3 is purely CPU-bound and single-threaded by nature for synchronous event execution. Modeling concurrent LTE and 5G stacks meant a single simulation run took <strong>at least 8 hours</strong>, killing our iteration speed.</p></li>
+</ol>
+</section>
+<section id="version-4-the-production-pipeline-hybrid-framework">
+<h3>Version 4: The Production Pipeline (Hybrid Framework)<a class="headerlink" href="#version-4-the-production-pipeline-hybrid-framework" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Methodology:</strong> Our final breakthrough utilizes a decoupled, multi-engine production pipeline that splits mobility, control loops, and high-fidelity physical layer calculations across specialized tools.</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Orchestrating Technology</p></th>
+<th class="head"><p>Functional Responsibility</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Mobility</strong></p></td>
+<td><p>NS-3 (Network Simulator 3)</p></td>
+<td><p>Coordinates ground user trajectories and spatial transitions within the EN-DC footprint.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Control</strong></p></td>
+<td><p>Custom Python Engine</p></td>
+<td><p>Manages the cell-load aware dynamic UAV drone navigation loops.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>RF / Signal</strong></p></td>
+<td><p>Sionna (GPU-Accelerated)</p></td>
+<td><p>Executes massive parallel physical layer, fading, and noise calculations across heterogeneous frequencies (LTE and 5G).</p></td>
+</tr>
+</tbody>
+</table>
+<p>To manage scale, compute costs, and model accuracy, Version 4 is divided into <strong>two structural sub-datasets</strong>:</p>
+<section id="sub-dataset-a-hexagonal-simulation">
+<h4>Sub-Dataset A: <code class="docutils literal notranslate"><span class="pre">hexagonal_simulation</span></code><a class="headerlink" href="#sub-dataset-a-hexagonal-simulation" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Characteristics:</strong> High-volume, statistical channel modeling.</p></li>
+<li><p><strong>Implementation:</strong> Built using Sionna’s <strong>UMIChannel (Urban Micro)</strong> model. It incorporates comprehensive multi-cell co-channel interference modeling for both LTE and 5G layers, fast/slow fading profiles, log-normal shadowing, and thermal noise layers.</p></li>
+<li><p><strong>Purpose:</strong> This dataset serves as the backbone for baseline training, teaching the SOTA neural network architectures generalized macro-temporal dependencies and basic multi-connectivity handover behavior.</p></li>
+</ul>
+</section>
+<section id="sub-dataset-b-ray-tracing-simulation">
+<h4>Sub-Dataset B: <code class="docutils literal notranslate"><span class="pre">ray_tracing_simulation</span></code><a class="headerlink" href="#sub-dataset-b-ray-tracing-simulation" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Characteristics:</strong> High-fidelity, deterministic, environment-specific modeling.</p></li>
+<li><p><strong>Implementation:</strong> We imported a highly detailed <strong>OpenStreetMap (<code class="docutils literal notranslate"><span class="pre">.osm</span></code>) file of Casablanca Finance City (CFC)</strong> into <strong>Blender</strong>. We manually configured realistic 3D building heights and accurately distributed the three most common urban construction materials across the scene.</p></li>
+<li><p><strong>The Ray-Tracing Pipeline:</strong> This 3D environment was fed into Sionna’s GPU-accelerated Ray Tracing engine to simulate real physical interactions (diffraction, specular reflection, and scattering).</p></li>
+<li><p><strong>Purpose (Fine-Tuning Paradigm):</strong> Because ray tracing is computationally expensive, we generate data in small, highly controlled batches. The base model, pre-trained on the large-scale <code class="docutils literal notranslate"><span class="pre">hexagonal_simulation</span></code>, uses this deterministic ray-tracing dataset for <strong>fine-tuning</strong>, allowing it to adapt to real-world geometric multipath anomalies and localized building shadowing profiles.</p></li>
+</ul>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Image 1</p></th>
+<th class="head"><p>Image 2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="" src="_images/city_raytracing_blender.png" /></p></td>
+<td><p><img alt="" src="_images/drone_ray_tracin_blender.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Image 3</p></th>
+<th class="head"><p>Image 4</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="" src="_images/render-ray-tracing-0001.png" /></p></td>
+<td><p><img alt="" src="_images/render-ray-tracing-0002.png" /></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Image 5</p></th>
+<th class="head"><p>Image 6</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><img alt="" src="_images/render-ray-tracing-0003.png" /></p></td>
+<td><p><img alt="" src="_images/user_ray_tracing_blender.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="time-series-feature-schema">
+<h2>4. Time-Series Feature Schema<a class="headerlink" href="#time-series-feature-schema" title="Link to this heading"></a></h2>
+<p>The final dataset is structured as sliding windows of sequence length <span class="math notranslate nohighlight">\(T\)</span>, collecting the following key features:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ t-(T-1) , ... , t-1 , t ]  ───&gt; Predict Target Event at ───&gt; [ t + Δt ]
+</pre></div>
+</div>
+<section id="feature-matrix-specification">
+<h3>4.1. Feature Matrix Specification<a class="headerlink" href="#feature-matrix-specification" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Temporal RF Metrics:</strong> Time-series arrays of RSRP, RSRQ, and SINR for both the serving LTE Master Node (MN) and 5G Secondary Node (SN), plus top <span class="math notranslate nohighlight">\(N\)</span> neighboring candidate cells for each layer (<span class="math notranslate nohighlight">\(T \times 2(N+1)\)</span> matrix dimensions).</p></li>
+<li><p><strong>Network State Indicators:</strong> Real-time cell load, queue delay profiles, and localized throughput capacities per base station (spanning both LTE anchors and 5G nodes).</p></li>
+<li><p><strong>Mobility Metrics:</strong> Multi-axis velocity vectors (<span class="math notranslate nohighlight">\(v_x, v_y, v_z\)</span>) and spatial trajectories of ground users and dynamic UAV centroids.</p></li>
+<li><p><strong>Target Label:</strong> Explicit handover event vectors marked at time <span class="math notranslate nohighlight">\(t + \Delta t\)</span>, identifying the optimal target action (e.g., MN Handover or SN Change) while avoiding ping-pong oscillations.</p></li>
+</ol>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Model Architecture Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, WASSIM MCHICHI, AOUTMANI MOHAMMED AMIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

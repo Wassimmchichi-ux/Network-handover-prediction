@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration &mdash; AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=299da549" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dataset Documentation: Geo-Context Aware Predictive Handover Dataset" href="dataset.html" />
+    <link rel="prev" title="Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-core-problem-beyond-threshold-based-handovers">2. The Core Problem: Beyond Threshold-Based Handovers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-research-focus-time-series-predictive-decision-making">3. The Research Focus: Time-Series Predictive Decision Making</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-indicators-for-prediction">Key Indicators for Prediction:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#proposed-framework-architecture">4. Proposed Framework Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-decision-making-workflow">The Decision-Making Workflow:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mathematical-formulation">5. Mathematical Formulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strategic-research-goals">6. Strategic Research Goals</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset Documentation: Geo-Context Aware Predictive Handover Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Model Architecture Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployement.html">5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/overview.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="overview-time-series-based-handover-cell-selection-for-5g-to-6g-migration">
+<h1>Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration<a class="headerlink" href="#overview-time-series-based-handover-cell-selection-for-5g-to-6g-migration" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>The transition from 5G to 6G requires a paradigm shift in how we manage User Equipment (UE) mobility. As network density and frequency spectrum complexity increase, traditional reactive handover (HO) mechanisms based on instantaneous signal thresholds are becoming obsolete. This study focuses on a <strong>proactive paradigm</strong>, where handover cell selection is driven by <strong>time-series prediction of network indicators</strong>, enabling the network to anticipate movement patterns and channel quality fluctuations before they occur.</p>
+</section>
+<hr class="docutils" />
+<section id="the-core-problem-beyond-threshold-based-handovers">
+<h2>2. The Core Problem: Beyond Threshold-Based Handovers<a class="headerlink" href="#the-core-problem-beyond-threshold-based-handovers" title="Link to this heading"></a></h2>
+<p>Current 5G handover protocols rely on the “A3 event” (RSRP-based triggering). This approach is fundamentally limited in a 6G context for the following reasons:</p>
+<ul class="simple">
+<li><p><strong>Reactive Latency:</strong> Waiting for signal degradation to cross a threshold creates a “dead zone” of connectivity, incompatible with 6G’s strict URLLC (Ultra-Reliable Low-Latency Communication) requirements.</p></li>
+<li><p><strong>Signal Instability:</strong> High-frequency 6G bands (mmWave/THz) are highly susceptible to blockage and rapid fading. Instantaneous values (current RSRP) are poor predictors of signal viability just 500ms into the future.</p></li>
+<li><p><strong>Oscillation Risks:</strong> Relying on current snapshots leads to frequent “ping-pong” handovers, as the network fails to distinguish between transient interference and genuine mobility-driven signal loss.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="the-research-focus-time-series-predictive-decision-making">
+<h2>3. The Research Focus: Time-Series Predictive Decision Making<a class="headerlink" href="#the-research-focus-time-series-predictive-decision-making" title="Link to this heading"></a></h2>
+<p>Our research shifts the focus from <strong>“What is the signal now?”</strong> to <strong>“What will the indicators be at time <span class="math notranslate nohighlight">\(t + \Delta t\)</span>?”</strong></p>
+<p>By treating network indicators as continuous time-series data, we can leverage temporal dependencies to make proactive handover decisions.</p>
+<section id="key-indicators-for-prediction">
+<h3>Key Indicators for Prediction:<a class="headerlink" href="#key-indicators-for-prediction" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Channel State Information (CSI):</strong> Predicting future fading patterns and SNR.</p></li>
+<li><p><strong>Reference Signal Received Power (RSRP):</strong> Forecasting long-term trends to avoid HOs triggered by momentary shadowing.</p></li>
+<li><p><strong>Network Load/Traffic Density:</strong> Predicting future cell congestion to perform load-balancing-aware handovers.</p></li>
+<li><p><strong>UE Trajectory/Velocity:</strong> Using historical coordinate data to estimate the next likely target cells.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="proposed-framework-architecture">
+<h2>4. Proposed Framework Architecture<a class="headerlink" href="#proposed-framework-architecture" title="Link to this heading"></a></h2>
+<p>The proposed system utilizes a predictive pipeline to inform the selection engine.</p>
+<section id="the-decision-making-workflow">
+<h3>The Decision-Making Workflow:<a class="headerlink" href="#the-decision-making-workflow" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Data Collection:</strong> Continuous streaming of temporal KPI data from the UE and gNB.</p></li>
+<li><p><strong>Temporal Feature Engineering:</strong> Normalizing and windowing data to capture trends, seasonality, and mobility patterns.</p></li>
+<li><p><strong>Predictive Modeling:</strong> Utilizing Deep Learning architectures (e.g., LSTMs, Transformers, or Temporal Convolutional Networks) to forecast indicator values.</p></li>
+<li><p><strong>Proactive Handover Logic:</strong> A decision engine that selects the target cell by comparing the <em>predicted</em> states of neighboring cells at time <span class="math notranslate nohighlight">\(t + \Delta t\)</span>, rather than their current states.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="mathematical-formulation">
+<h2>5. Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Link to this heading"></a></h2>
+<p>The objective is to maximize a utility function <span class="math notranslate nohighlight">\(U\)</span> based on predicted indicators <span class="math notranslate nohighlight">\(I\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+P_{HO} = \arg\max_{c \in C} \mathbb{E}\left[ U\left(\hat{I}_c(t+\Delta t)\right) \right]
+\]</div>
+<p><strong>Where:</strong></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{I}_c(t+\Delta t)\)</span> is the predicted indicator vector (RSRP, Load, Throughput) for cell <span class="math notranslate nohighlight">\(c\)</span> at the near-future time step.</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is the set of candidate neighbor cells.</p></li>
+<li><p><span class="math notranslate nohighlight">\(U(\cdot)\)</span> is the multi-objective utility function, which penalizes:</p>
+<ul>
+<li><p>high handover frequency</p></li>
+<li><p>low predicted SNR</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="strategic-research-goals">
+<h2>6. Strategic Research Goals<a class="headerlink" href="#strategic-research-goals" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Anticipatory Handover:</strong> Initiate HO preparation <em>before</em> the current signal drops below the critical threshold.</p></li>
+<li><p><strong>Ping-Pong Mitigation:</strong> Filter out noise and transient dips in the time-series data to reduce redundant HO signaling.</p></li>
+<li><p><strong>Seamless Transition:</strong> Ensure target cell capacity is reserved based on predicted arrival, preventing congestion-related drops during the handover execution.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dataset.html" class="btn btn-neutral float-right" title="Dataset Documentation: Geo-Context Aware Predictive Handover Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, WASSIM MCHICHI, AOUTMANI MOHAMMED AMIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

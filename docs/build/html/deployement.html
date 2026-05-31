@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine &mdash; AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=299da549" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Training Reference" href="training.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset Documentation: Geo-Context Aware Predictive Handover Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Model Architecture Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#production-deployment-plan-architectural-specification">Production Deployment Plan &amp; Architectural Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executive-summary-context">1. Executive Summary &amp; Context</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#current-network-implementation-matrix">Current Network Implementation Matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-simulation-fine-tuning-pipeline">2. Advanced Simulation &amp; Fine-Tuning Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-metrics-telecom-significance">3. Performance Metrics &amp; Telecom Significance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#performance-comparison-matrix">Performance Comparison Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-telecommunication-benefit-of-top-3-accuracy-85">The Telecommunication Benefit of Top-3 Accuracy (85%)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#target-deployment-architecture">4. Target Deployment Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#infrastructure-specifications">Infrastructure Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-horizon-operational-pipeline-250ms-execution-loop">5. Multi-Horizon Operational Pipeline (250ms Execution Loop)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#detailed-pipeline-stages">Detailed Pipeline Stages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#deployment-verification-fallback-controls">6. Deployment Verification &amp; Fallback Controls</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#kpi-guardrail-triggers">KPI Guardrail Triggers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-step-integration-milestone-checklist">7. Next-Step Integration Milestone Checklist</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/deployement.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="g-to-6g-intelligent-handover-cell-selection-prediction-engine">
+<h1>5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine<a class="headerlink" href="#g-to-6g-intelligent-handover-cell-selection-prediction-engine" title="Link to this heading"></a></h1>
+<section id="production-deployment-plan-architectural-specification">
+<h2>Production Deployment Plan &amp; Architectural Specification<a class="headerlink" href="#production-deployment-plan-architectural-specification" title="Link to this heading"></a></h2>
+<p><strong>Document Version:</strong> 1.0.0<br />
+<strong>Status:</strong> Ready for Telco Infrastructure Review<br />
+<strong>Target Environment:</strong> Next-Generation Radio Access Network (NG-RAN) / gNodeB Server Infrastructure<br />
+<strong>Deployment Context:</strong> 5G Non-Standalone (NSA) Anchored with 6G-Forward Transition Capabilities</p>
+</section>
+<hr class="docutils" />
+<section id="executive-summary-context">
+<h2>1. Executive Summary &amp; Context<a class="headerlink" href="#executive-summary-context" title="Link to this heading"></a></h2>
+<p>This deployment plan outlines the integration, operational architecture, and performance verification for an intelligent <strong>Multi-Horizon Handover (HO) and Cell Selection Prediction Engine</strong>. Operating over a cluster of <strong>10 heterogeneous macro and micro cells</strong>, this system mitigates the latency and ping-pong effects typical of traditional reactive handover mechanisms (A3/A5 event-triggered).</p>
+<p>By leveraging deep learning models validated on a highly precise simulation framework, the engine predicts cell suitability <strong>5 timestamps into the future (250ms lookahead with 50ms sampling intervals)</strong>. This proactive approach allows telecom operators to pre-allocate radio resources and execute seamless context transfers, providing a foundational bridge for the transition from 5G New Radio (NR) to early 6G ultra-reliable low-latency communication (URLLC) environments.</p>
+<section id="current-network-implementation-matrix">
+<h3>Current Network Implementation Matrix<a class="headerlink" href="#current-network-implementation-matrix" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Deployment Mode:</strong> 5G Non-Standalone (NSA) Architecture (Option 3x). Control plane anchored via 4G Evolved Packet Core (EPC / eNodeB), user plane boosted via 5G NR servers (gNodeB).</p></li>
+<li><p><strong>Target Scale:</strong> 10 highly dynamic cells, including aerial nodes.</p></li>
+<li><p><strong>Core Application:</strong> Proactive Conditional Handover (CHO) optimization and load-aware cell selection.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="advanced-simulation-fine-tuning-pipeline">
+<h2>2. Advanced Simulation &amp; Fine-Tuning Pipeline<a class="headerlink" href="#advanced-simulation-fine-tuning-pipeline" title="Link to this heading"></a></h2>
+<p>The underlying model was developed, validated, and fine-tuned using a high-fidelity hybrid simulation pipeline to mirror realistic radio propagation and subscriber mobility:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------------------------------+</span>
+<span class="o">|</span>  <span class="n">ns</span><span class="o">-</span><span class="mi">3</span> <span class="n">Network</span> <span class="n">Simulation</span> <span class="n">Framework</span>    <span class="o">|</span> <span class="o">---&gt;</span> <span class="n">Microscopic</span> <span class="n">Mobility</span> <span class="n">Models</span>
+<span class="o">|</span>  <span class="p">(</span><span class="n">Macroscopic</span> <span class="n">Network</span> <span class="o">&amp;</span> <span class="n">Topology</span><span class="p">)</span>     <span class="o">|</span>      <span class="o">&amp;</span> <span class="n">User</span> <span class="n">Equipment</span> <span class="p">(</span><span class="n">UE</span><span class="p">)</span> <span class="n">Trajectories</span>
+<span class="o">+---------------------------------------+</span>
+                    <span class="o">|</span>
+                    <span class="n">v</span>
+<span class="o">+---------------------------------------+</span>
+<span class="o">|</span>   <span class="n">Sionna</span> <span class="n">Link</span><span class="o">-</span><span class="n">Level</span> <span class="n">Simulator</span>         <span class="o">|</span> <span class="o">---&gt;</span> <span class="n">Differentiable</span> <span class="n">Physical</span> <span class="n">Layer</span> <span class="p">(</span><span class="n">PHY</span><span class="p">)</span>
+<span class="o">|</span>   <span class="p">(</span><span class="n">Python</span><span class="o">-</span><span class="n">based</span> <span class="n">Tensor</span> <span class="n">Framework</span><span class="p">)</span>     <span class="o">|</span>      <span class="n">Urban</span> <span class="n">Micro</span> <span class="p">(</span><span class="n">UMi</span><span class="p">)</span> <span class="n">Channel</span> <span class="n">Profiles</span>
+<span class="o">+---------------------------------------+</span>
+                    <span class="o">|</span>
+                    <span class="n">v</span> <span class="p">(</span><span class="n">Fine</span><span class="o">-</span><span class="n">Tuning</span> <span class="n">Layer</span><span class="p">)</span>
+<span class="o">+---------------------------------------+</span>
+<span class="o">|</span>       <span class="n">Blender</span> <span class="mi">3</span><span class="n">D</span> <span class="n">Environment</span>          <span class="o">|</span> <span class="o">---&gt;</span> <span class="n">Accurate</span> <span class="n">Urban</span> <span class="n">Topology</span> <span class="n">Generation</span>
+<span class="o">|</span>   <span class="p">(</span><span class="n">CFC</span> <span class="n">Mesh</span> <span class="n">Model</span> <span class="n">Reconstruction</span><span class="p">)</span>    <span class="o">|</span>      <span class="o">&amp;</span> <span class="n">XML</span> <span class="n">Ray</span><span class="o">-</span><span class="n">Tracing</span> <span class="n">Map</span> <span class="n">Exports</span>
+<span class="o">+---------------------------------------+</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p><strong>Macroscopic Mobility &amp; Protocol Stack (<code class="docutils literal notranslate"><span class="pre">ns-3</span></code>):</strong> Packet-level interactions, user equipment (UE) trajectories, and macro network behavior were simulated using <code class="docutils literal notranslate"><span class="pre">ns-3</span></code>.</p></li>
+<li><p><strong>Physical Layer (PHY) Processing (<code class="docutils literal notranslate"><span class="pre">Sionna</span></code>):</strong> The python-based Sionna framework executed differentiable link-level simulations using standard 3GPP <strong>Urban Micro (UMi)</strong> channel models.</p></li>
+<li><p><strong>Drone Integration (Load-Aware Strategy):</strong> Unmanned Aerial Vehicles (UAVs) acting as airborne base stations were embedded into the network. A specialized load-aware strategy dynamically adjusted cell selection boundaries based on ground-user density and drone battery/backhaul constraints.</p></li>
+<li><p><strong>Site-Specific Ray-Tracing Fine-Tuning:</strong> To transition the model from idealized geometry to site-specific reality, precise <strong>Computational Fluid Dynamics (CFC) meshes</strong> of urban environments were modeled in Blender. These were exported as structured XML scene descriptions into Sionna’s ray-tracing engine, producing realistic multipath components, shadow fading, and diffraction profiles.</p></li>
+</ol>
+</section>
+<hr class="docutils" />
+<section id="performance-metrics-telecom-significance">
+<h2>3. Performance Metrics &amp; Telecom Significance<a class="headerlink" href="#performance-metrics-telecom-significance" title="Link to this heading"></a></h2>
+<p>The predictive engine shifts the operational paradigm from single-step reactive assessment to multi-horizon predictive scoring. The model’s evaluation metrics demonstrate high reliability across complex scenarios:</p>
+<section id="performance-comparison-matrix">
+<h3>Performance Comparison Matrix<a class="headerlink" href="#performance-comparison-matrix" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Topology / Horizon Profile</p></th>
+<th class="head text-left"><p>Lookahead Interval</p></th>
+<th class="head text-center"><p>Top-1 Accuracy Score</p></th>
+<th class="head text-center"><p>Top-3 Accuracy Score</p></th>
+<th class="head text-left"><p>Operational Application</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Perfect Hexagonal Topology</strong> (Ideal Baseline)</p></td>
+<td class="text-left"><p>1-Step (50ms)</p></td>
+<td class="text-center"><p>–</p></td>
+<td class="text-center"><p><strong>98.0%</strong></p></td>
+<td class="text-left"><p>Pure theoretical optimization / static verification.</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Realistic Urban Micro (UMi) + Drones</strong> (Production)</p></td>
+<td class="text-left"><p>5-Step Multi-Horizon (250ms)</p></td>
+<td class="text-center"><p><strong>56.0%</strong></p></td>
+<td class="text-center"><p><strong>85.0%</strong></p></td>
+<td class="text-left"><p><strong>Active Production Configuration</strong> for Conditional Handover.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-telecommunication-benefit-of-top-3-accuracy-85">
+<h3>The Telecommunication Benefit of Top-3 Accuracy (85%)<a class="headerlink" href="#the-telecommunication-benefit-of-top-3-accuracy-85" title="Link to this heading"></a></h3>
+<p>While a <strong>56% Top-1 accuracy</strong> at a 250ms horizon seems low for standard classification tasks, in cellular networking infrastructure, the <strong>85% Top-3 accuracy is a breakthrough operational metric</strong>.</p>
+<ul class="simple">
+<li><p><strong>Why Top-1 Suffers:</strong> At 250ms in the future within highly dynamic UMi environments (especially with moving drones and ray-traced shadow fading), fast-fading effects and blockages make predicting the <em>absolute absolute best</em> single cell highly volatile.</p></li>
+<li><p><strong>The Power of Top-3 Execution:</strong> Telecom standards (3GPP Release 16/17) support <strong>Conditional Handover (CHO)</strong>. Instead of preparing a single target cell, the gNodeB can pre-prepare a candidate cell pool.</p></li>
+<li><p><strong>Resource Optimization:</strong> Achieving 85% Top-3 accuracy means that 85% of the time, the optimal target cell is within our prepared pool of 3 cells. The NR server can pre-allocate random-access channel (RACH) resources and initiate early context transfers for these 3 cells. This eliminates the latency of fetching user context <em>after</em> a link degradation event, reducing Handover Failure (HOF) rates and Radio Link Failures (RLF) to near zero without overloading the backhaul with excessive candidate preparations.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="target-deployment-architecture">
+<h2>4. Target Deployment Architecture<a class="headerlink" href="#target-deployment-architecture" title="Link to this heading"></a></h2>
+<p>The prediction engine runs containerized at the edge of the Next-Generation Radio Access Network (NG-RAN), interacting directly with the RRC (Radio Resource Control) layer of the NR servers.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">+---------------------------------------------------------------------------------+</span>
+<span class="o">|</span>                                <span class="mi">5</span><span class="n">G</span> <span class="n">NR</span> <span class="n">SERVER</span> <span class="p">(</span><span class="n">gNodeB</span><span class="p">)</span>                            <span class="o">|</span>
+<span class="o">|</span>                                                                                 <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+---------------------------+</span>                 <span class="o">+-----------------------------+</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">|</span>     <span class="n">CU</span><span class="o">-</span><span class="n">CP</span> <span class="o">/</span> <span class="n">RRC</span> <span class="n">Layer</span>     <span class="o">|</span>  <span class="n">UE</span> <span class="n">Metrics</span>     <span class="o">|</span>  <span class="n">Handover</span> <span class="n">Prediction</span> <span class="n">Engine</span> <span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">|</span> <span class="p">(</span><span class="n">Radio</span> <span class="n">Resource</span> <span class="n">Control</span><span class="p">)</span>  <span class="o">|----------------&gt;|</span>     <span class="p">(</span><span class="n">ONNX</span> <span class="n">Runtime</span> <span class="n">Container</span><span class="p">)</span><span class="o">|</span>  <span class="o">|</span>
+<span class="o">|</span>  <span class="o">+---------------------------+</span> <span class="p">(</span><span class="n">RSRP</span><span class="o">/</span><span class="n">RSRQ</span><span class="o">/</span><span class="n">CQI</span><span class="p">)</span> <span class="o">+-----------------------------+</span>  <span class="o">|</span>
+<span class="o">|</span>                <span class="o">^</span>                                              <span class="o">|</span>                 <span class="o">|</span>
+<span class="o">|</span>                <span class="o">|</span> <span class="n">Execute</span> <span class="n">Proactive</span> <span class="n">Pool</span> <span class="n">Preparation</span>          <span class="o">|</span>                 <span class="o">|</span>
+<span class="o">|</span>                <span class="o">+----------------------------------------------+</span>                 <span class="o">|</span>
+<span class="o">|</span>                               <span class="p">(</span><span class="n">Top</span><span class="o">-</span><span class="mi">3</span> <span class="n">Cell</span> <span class="n">IDs</span><span class="p">)</span>                                  <span class="o">|</span>
+<span class="o">+---------------------------------------------------------------------------------+</span>
+                                       <span class="o">^</span>
+                                       <span class="o">|</span> <span class="n">X2</span><span class="o">/</span><span class="n">Xn</span> <span class="n">Interface</span>
+                                       <span class="n">v</span>
+                     <span class="o">+-----------------------------------+</span>
+                     <span class="o">|</span> <span class="n">Adjacent</span> <span class="n">Base</span> <span class="n">Stations</span> <span class="p">(</span><span class="mi">10</span> <span class="n">Cells</span><span class="p">)</span> <span class="o">|</span>
+                     <span class="o">+-----------------------------------+</span>
+</pre></div>
+</div>
+<section id="infrastructure-specifications">
+<h3>Infrastructure Specifications<a class="headerlink" href="#infrastructure-specifications" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Host Platform:</strong> Carrier-grade Edge Compute Node integrated within the gNodeB Centralized Unit Control Plane (CU-CP).</p></li>
+<li><p><strong>Runtime Environment:</strong> Docker Containerized Environment running an <strong>ONNX Runtime</strong> optimized for low-latency inference (&lt; 2ms per execution loop).</p></li>
+<li><p><strong>Input Vector Data:</strong> Real-time metrics streaming from the cell Layer 3 filtering:</p>
+<ul>
+<li><p>Reference Signal Received Power (RSRP) histories for all 10 candidate cells.</p></li>
+<li><p>Reference Signal Received Quality (RSRQ) histories.</p></li>
+<li><p>Channel Quality Indicators (CQI).</p></li>
+<li><p>Drone load/capacity telemetry.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="multi-horizon-operational-pipeline-250ms-execution-loop">
+<h2>5. Multi-Horizon Operational Pipeline (250ms Execution Loop)<a class="headerlink" href="#multi-horizon-operational-pipeline-250ms-execution-loop" title="Link to this heading"></a></h2>
+<p>The system enforces a strict real-time telemetry-to-execution pipeline designed to feed the 3GPP standard signaling loop.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>       <span class="p">[</span><span class="n">T</span> <span class="o">=</span> <span class="mi">0</span><span class="n">ms</span><span class="p">]</span> <span class="n">Stream</span> <span class="n">L3</span> <span class="n">filtered</span> <span class="n">metrics</span> <span class="p">(</span><span class="n">RSRP</span><span class="o">/</span><span class="n">RSRQ</span><span class="o">/</span><span class="n">CQI</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="mi">10</span> <span class="n">cells</span>
+                           <span class="o">|</span>
+                           <span class="n">v</span>
+       <span class="p">[</span><span class="n">T</span> <span class="o">+</span> <span class="mi">2</span><span class="n">ms</span><span class="p">]</span> <span class="n">Vectorization</span> <span class="o">&amp;</span> <span class="n">Normalization</span> <span class="n">into</span> <span class="n">Time</span><span class="o">-</span><span class="n">Series</span> <span class="n">Matrix</span>
+                           <span class="o">|</span>
+                           <span class="n">v</span>
+       <span class="p">[</span><span class="n">T</span> <span class="o">+</span> <span class="mi">4</span><span class="n">ms</span><span class="p">]</span> <span class="n">Execute</span> <span class="n">Inference</span> <span class="n">Engine</span> <span class="p">(</span><span class="n">Multi</span><span class="o">-</span><span class="n">Horizon</span> <span class="mi">5</span><span class="o">-</span><span class="n">step</span> <span class="n">Prediction</span><span class="p">)</span>
+                           <span class="o">|</span>
+                           <span class="n">v</span>
+       <span class="p">[</span><span class="n">T</span> <span class="o">+</span> <span class="mi">5</span><span class="n">ms</span><span class="p">]</span> <span class="n">Extract</span> <span class="n">Top</span><span class="o">-</span><span class="mi">3</span> <span class="n">Predicted</span> <span class="n">Candidate</span> <span class="n">Cells</span> <span class="p">(</span><span class="mi">85</span><span class="o">%</span> <span class="n">Accuracy</span><span class="p">)</span>
+                           <span class="o">|</span>
+                           <span class="n">v</span>
+       <span class="p">[</span><span class="n">T</span> <span class="o">+</span> <span class="mi">7</span><span class="n">ms</span><span class="p">]</span> <span class="n">gNodeB</span> <span class="n">issues</span> <span class="n">RRC</span> <span class="n">Reconfiguration</span> <span class="k">with</span> <span class="n">CHO</span> <span class="n">Configurations</span>
+                           <span class="o">|</span>
+                           <span class="n">v</span>
+       <span class="p">[</span><span class="n">T</span> <span class="o">+</span> <span class="mi">250</span><span class="n">ms</span><span class="p">]</span> <span class="n">UE</span> <span class="n">encounters</span> <span class="n">real</span><span class="o">-</span><span class="n">time</span> <span class="n">channel</span> <span class="n">change</span> <span class="o">-&gt;</span> <span class="n">Instantly</span> <span class="n">connects</span> 
+                   <span class="n">to</span> <span class="n">pre</span><span class="o">-</span><span class="n">prepared</span> <span class="n">target</span> <span class="n">cell</span> <span class="n">without</span> <span class="n">signaling</span> <span class="n">delay</span>
+</pre></div>
+</div>
+<section id="detailed-pipeline-stages">
+<h3>Detailed Pipeline Stages<a class="headerlink" href="#detailed-pipeline-stages" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Data Ingestion (Every 50ms):</strong> The CU-CP extracts the sliding window of the last 10 historical timestamps (500ms total history) of RSRP/RSRQ measurements for the target UE across the 10 cells.</p></li>
+<li><p><strong>Inference Execution:</strong> The time-series matrix is fed into the model. The model computes the multi-horizon probability distribution for the cell states at <span class="math notranslate nohighlight">\(T+50	ext{ms}, T+100	ext{ms}, T+150	ext{ms}, T+200	ext{ms}, 	ext{ and } T+250	ext{ms}\)</span>.</p></li>
+<li><p><strong>Top-3 Target Selection:</strong> The final output layer ranks the top 3 target cells projected at <span class="math notranslate nohighlight">\(T+250	ext{ms}\)</span>.</p></li>
+<li><p><strong>Proactive Resource Preparation:</strong> If the predicted top-1 cell differs from the serving cell and crosses the safety delta threshold, the gNodeB triggers standard X2/Xn interface preparation signaling to the top 3 target neighbors. Context vectors and target RACH pre-allocations are completed <em>before</em> the 250ms window expires.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="deployment-verification-fallback-controls">
+<h2>6. Deployment Verification &amp; Fallback Controls<a class="headerlink" href="#deployment-verification-fallback-controls" title="Link to this heading"></a></h2>
+<p>Because this engine runs within a critical telecommunications production cluster, strict guardrails must ensure service continuity if unexpected field anomalies occur.</p>
+<section id="kpi-guardrail-triggers">
+<h3>KPI Guardrail Triggers<a class="headerlink" href="#kpi-guardrail-triggers" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Anomaly Detector:</strong> If the current real-time Top-1 measurement mismatches the 250ms historical prediction for 3 consecutive execution loops, a local prediction confidence degradation flag is raised.</p></li>
+<li><p><strong>Fallback Protocol:</strong> Upon flag activation, the gNodeB temporarily falls back to standard <strong>3GPP Release 15 Event A3 (Neighbor becomes offset better than spcell)</strong> reactive handover logic. This bypasses the predictive engine until the context alignment score stabilizes above 80%.</p></li>
+<li><p><strong>Drone Load Balancing:</strong> If a drone node’s load exceeds 85% capacity, the predictive inference engine automatically appends a penalty scalar to that cell’s predicted score, naturally shedding user handovers to adjacent ground macro cells.</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="next-step-integration-milestone-checklist">
+<h2>7. Next-Step Integration Milestone Checklist<a class="headerlink" href="#next-step-integration-milestone-checklist" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>[] <strong>Phase 1:</strong> Export fine-tuned weights from Python/Sionna framework to <code class="docutils literal notranslate"><span class="pre">.onnx</span></code> format.</p></li>
+<li><p>[ ] <strong>Phase 2:</strong> Integrate ONNX model file into the testbench gNodeB emulator.</p></li>
+<li><p>[ ] <strong>Phase 3:</strong> Establish live telemetry pipelines using standard RAN Intelligent Controller (RIC) or direct southbound interfaces to pull RSRP streams.</p></li>
+<li><p>[ ] <strong>Phase 4:</strong> Conduct shadow-mode testing on production NR servers (predicting without executing signaling changes) to validate the 85% Top-3 accuracy against real-world user equipment.</p></li>
+<li><p>[ ] <strong>Phase 5:</strong> Activate closed-loop execution for selected User Equipment groups to achieve seamless predictive handovers.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="training.html" class="btn btn-neutral float-left" title="Training Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, WASSIM MCHICHI, AOUTMANI MOHAMMED AMIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

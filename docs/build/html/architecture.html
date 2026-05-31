@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model Architecture Reference &mdash; AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented) 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=299da549" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Training Reference" href="training.html" />
+    <link rel="prev" title="Dataset Documentation: Geo-Context Aware Predictive Handover Dataset" href="dataset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview: Time-Series Based Handover Cell Selection for 5G-to-6G Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Dataset Documentation: Geo-Context Aware Predictive Handover Dataset</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Model Architecture Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture-lineage-overview">Architecture Lineage Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-01-temporal-deepset-baseline">Exp 01 — Temporal DeepSet (Baseline)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hyperparameters">Hyperparameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results-single-step-baseline-only">Results (Single-Step — Baseline Only)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-curves">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#confusion-matrix">Confusion Matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-02-spatiotemporal-deepset-production">Exp 02 — SpatioTemporal DeepSet Production</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#results-5-step-future-prediction">Results (5-Step Future Prediction)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#per-step-future-accuracy">Per-Step Future Accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-03-mtl-set-transformer">Exp 03 — MTL Set Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Training Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-04-6g-predictive-set-transformer">Exp 04 — 6G Predictive Set Transformer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hyperparameters-optuna-best">Hyperparameters (Optuna Best)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Confusion Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comparison-plot">Comparison Plot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-05-strategic-deepset-context-injection">Exp 05 — Strategic DeepSet (Context Injection)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Training Curves</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-06-sota-ray-tracing-fine-tune">Exp 06 — SOTA Ray-Tracing Fine-Tune</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#results-on-ray-tracing-test-split">Results on Ray-Tracing Test Split</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Confusion Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#occlusion-example">Occlusion Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exp-07-ray-id-crossformer-sota-production">Exp 07 — Ray-ID CrossFormer ★ SOTA / Production</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Hyperparameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results-on-ray-tracing-domain">Results on Ray-Tracing Domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Training Curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Confusion Matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-comparison-summary">Model Comparison Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployement.html">5G-to-6G Intelligent Handover &amp; Cell Selection Prediction Engine</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI-Based Handover Prediction in UAV-Assisted 3D Heterogeneous Networks (Beyond 5G / 6G-Oriented)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Model Architecture Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/architecture.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="model-architecture-reference">
+<h1>Model Architecture Reference<a class="headerlink" href="#model-architecture-reference" title="Link to this heading"></a></h1>
+<p>This page documents every model architecture developed in the experimentation pipeline, from the first baseline proof-of-concept through to the current <strong>SOTA production model</strong>. All architectures operate on the same core problem: given a sliding window of RF measurements across a candidate cell set, predict the optimal target cell for a handover 5 steps into the future.</p>
+<blockquote>
+<div><p><strong>Production model:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_ray_id_crossformer.keras</span></code><br />
+<strong>Problem type (production):</strong> 5-step future horizon multi-class cell selection<br />
+<strong>Problem type (baseline only):</strong> Single-step (current-instant) selection — <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/01_temporal_deepset.ipynb</span></code> only</p>
+</div></blockquote>
+<hr class="docutils" />
+<section id="architecture-lineage-overview">
+<h2>Architecture Lineage Overview<a class="headerlink" href="#architecture-lineage-overview" title="Link to this heading"></a></h2>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Exp 01 — Temporal DeepSet (baseline, single-step)
+      │
+      ├─► Exp 02 — SpatioTemporal DeepSet Production (5-step, multi-horizon)
+      │
+      ├─► Exp 03 — MTL Set Transformer (multi-task, 5-step)
+      │
+      ├─► Exp 04 — 6G Predictive Set Transformer (Optuna-tuned, 5-step)
+      │
+      ├─► Exp 05 — Strategic DeepSet (context injection, 5-step)
+      │
+      ├─► Exp 06 — SOTA Ray-Tracing Fine-Tune (MTL backbone → ray domain)
+      │
+      └─► Exp 07 — Ray-ID CrossFormer ★ SOTA / Production (5-step)
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exp-01-temporal-deepset-baseline">
+<h2>Exp 01 — Temporal DeepSet (Baseline)<a class="headerlink" href="#exp-01-temporal-deepset-baseline" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/01_temporal_deepset.ipynb</span></code><br />
+<strong>Checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_temporal_deepset.keras</span></code><br />
+<strong>⚠️ Important:</strong> This is a <strong>single-step (current-instant) cell selection</strong> experiment — it predicts the best cell at time <em>t</em>, not a future horizon. All subsequent experiments (02–07) target 5-step future prediction for production use.</p>
+</div></blockquote>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
+<p>The Temporal DeepSet stacks a per-cell LSTM temporal encoder with a DeepSet permutation-invariant aggregation, making it robust to variable numbers of neighbor cells and to the arbitrary ordering of the candidate set.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input: (K, T, F)  — K cells, T=25 timesteps, F=3 features (RSRP, SINR, Load)
+    │
+    ├─ [Per-Cell LSTM]  (shared weights across K)  →  φ(xᵢ) ∈ ℝ^64
+    │
+    ├─ [MaskedGlobalAveragePooling]   →  ρ-aggregation over valid cells
+    │
+    └─ [Classifier MLP]  →  logits ∈ ℝ^K
+</pre></div>
+</div>
+<p><img alt="Temporal DeepSet Architecture" src="_images/temporal_deepset_architecture.png" /></p>
+</section>
+<section id="hyperparameters">
+<h3>Hyperparameters<a class="headerlink" href="#hyperparameters" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">OBS_STEPS</span></code></p></td>
+<td><p>25</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAX_CELLS</span></code></p></td>
+<td><p>10</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LSTM_UNITS</span></code></p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PHI_DIM</span></code></p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PHI_LAYERS</span></code></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DROPOUT</span></code></p></td>
+<td><p>0.25</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BATCH_SIZE</span></code></p></td>
+<td><p>128</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LR_INIT</span></code></p></td>
+<td><p>1e-3</p></td>
+</tr>
+<tr class="row-even"><td><p>Loss</p></td>
+<td><p>Focal (γ=2.0, α=0.25) + Label Smoothing 0.1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="results-single-step-baseline-only">
+<h3>Results (Single-Step — Baseline Only)<a class="headerlink" href="#results-single-step-baseline-only" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Test Top-1</strong></p></td>
+<td><p><strong>99.82 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test Top-3</strong></p></td>
+<td><p><strong>100.0 %</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Test Top-5</strong></p></td>
+<td><p><strong>100.0 %</strong></p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p>These near-perfect numbers reflect the <strong>single-step</strong> nature of this experiment: the model selects the best <em>current</em> cell, which is an easier problem. This is <strong>not</strong> the 5-step production task.</p>
+</div></blockquote>
+</section>
+<section id="training-curves">
+<h3>Training Curves<a class="headerlink" href="#training-curves" title="Link to this heading"></a></h3>
+<p><img alt="Temporal DeepSet Training Curves" src="_images/temporal_deepset_training_curves.png" /></p>
+</section>
+<section id="confusion-matrix">
+<h3>Confusion Matrix<a class="headerlink" href="#confusion-matrix" title="Link to this heading"></a></h3>
+<p><img alt="Temporal DeepSet Confusion Matrix" src="_images/temporal_deepset_confusion_matrix.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exp-02-spatiotemporal-deepset-production">
+<h2>Exp 02 — SpatioTemporal DeepSet Production<a class="headerlink" href="#exp-02-spatiotemporal-deepset-production" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/02_temporal_deepset_production.ipynb</span></code><br />
+<strong>Architecture class:</strong> <code class="docutils literal notranslate"><span class="pre">SpatioTemporalDeepSet</span></code><br />
+<strong>Checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_temporal_deepset.keras</span></code></p>
+</div></blockquote>
+<p>This version extends the baseline to the 5-step future-horizon prediction problem. A multi-task decoder simultaneously predicts:</p>
+<ul class="simple">
+<li><p>the optimal cell at the <strong>current instant</strong> (auxiliary task, easy),</p></li>
+<li><p>the optimal cell at <strong>each of the next 5 steps</strong> (primary task),</p></li>
+<li><p>future <strong>RSRP / SINR / Load signal regression</strong> (auxiliary regression head).</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input: (K, T=200, F=5)
+    │
+    ├─ [Per-Cell LSTM (128 units)] → cell embedding φᵢ ∈ ℝ^64
+    │
+    ├─ [Attend module] → context-aware aggregation ρ ∈ ℝ^128
+    │
+    ├─ [Now-Decoder MLP] → cell_now logits ∈ ℝ^K         (auxiliary)
+    │
+    ├─ [Future-Decoder LSTM (256)] → hidden per horizon
+    │       └─ [Scorer] → logits ∈ ℝ^(H×K)              (primary, H=5)
+    │
+    └─ [Signal Regression Head] → (RSRP, SINR, Load) × H  (auxiliary)
+</pre></div>
+</div>
+<section id="results-5-step-future-prediction">
+<h3>Results (5-Step Future Prediction)<a class="headerlink" href="#results-5-step-future-prediction" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Horizon</p></th>
+<th class="head"><p>Top-1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>t+1</p></td>
+<td><p>64.98 %</p></td>
+</tr>
+<tr class="row-odd"><td><p>t+2</p></td>
+<td><p>57.94 %</p></td>
+</tr>
+<tr class="row-even"><td><p>t+3</p></td>
+<td><p>54.26 %</p></td>
+</tr>
+<tr class="row-odd"><td><p>t+4</p></td>
+<td><p>52.29 %</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>t+5</strong></p></td>
+<td><p><strong>51.20 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>avg</strong></p></td>
+<td><p><strong>56.13 %</strong></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RSRP MAE</p></td>
+<td><p>5.56 dBm</p></td>
+</tr>
+<tr class="row-odd"><td><p>SINR MAE</p></td>
+<td><p>5.14 dB</p></td>
+</tr>
+<tr class="row-even"><td><p>Load MAE</p></td>
+<td><p>0.072</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id1">
+<h3>Training Curves<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p><img alt="SpatioTemporal DeepSet Production Training" src="_images/production_deepset_training_curves.png" /></p>
+</section>
+<section id="per-step-future-accuracy">
+<h3>Per-Step Future Accuracy<a class="headerlink" href="#per-step-future-accuracy" title="Link to this heading"></a></h3>
+<p><img alt="Future Step Accuracy" src="_images/future_step_accuracy.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exp-03-mtl-set-transformer">
+<h2>Exp 03 — MTL Set Transformer<a class="headerlink" href="#exp-03-mtl-set-transformer" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/03_mtl_transformer.ipynb</span></code><br />
+<strong>Checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_mtl_transformer.keras</span></code><br />
+<strong>Loss:</strong> <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">×</span> <span class="pre">Focal(γ=2.0,</span> <span class="pre">α=0.25)</span> <span class="pre">+</span> <span class="pre">0.5</span> <span class="pre">×</span> <span class="pre">MSE</span></code></p>
+</div></blockquote>
+<p>The MTL Set Transformer replaces the DeepSet ρ-aggregation with a full multi-head self-attention block over the cell axis. This enables richer cross-cell interaction modeling before the final classification head.</p>
+<p><img alt="MTL Transformer Architecture" src="_images/mtl_transformer_architecture.png" /></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input: (K, T=25, F=4)   [RSRP, SINR, Load + zero-anchor flag]
+    │
+    ├─ [Per-Cell LSTM (64)] → φᵢ ∈ ℝ^64
+    │
+    ├─ [Set Transformer Block × 2]
+    │       ├─ Multi-Head Self-Attention (4 heads, key_dim=16)
+    │       └─ Feed-Forward (FF_DIM=128)
+    │
+    ├─ [Cell Classifier Head] → logits ∈ ℝ^K              (5-step)
+    │
+    └─ [RSRP Regression Head] → predicted RSRP per horizon
+</pre></div>
+</div>
+<section id="results">
+<h3>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Test Top-1</strong></p></td>
+<td><p><strong>55.79 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test Top-3</strong></p></td>
+<td><p><strong>86.02 %</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Test Top-5</strong></p></td>
+<td><p><strong>94.99 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>RSRP MAE</p></td>
+<td><p>4.20 dBm</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id2">
+<h3>Training Curves<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p><img alt="MTL Transformer Training" src="_images/mtl_training_curves.png" /></p>
+<p><img alt="MTL Experiment 3 Comparison" src="_images/mtl_exp3_results.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exp-04-6g-predictive-set-transformer">
+<h2>Exp 04 — 6G Predictive Set Transformer<a class="headerlink" href="#exp-04-6g-predictive-set-transformer" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/04_6g_predictive.ipynb</span></code><br />
+<strong>Checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_6g_predictive.keras</span></code><br />
+<strong>Tuning:</strong> Optuna hyperparameter search</p>
+</div></blockquote>
+<p>This experiment applies automated Optuna-based hyperparameter optimization over the Set Transformer family, extending the observation window to 200 timesteps to capture long-range temporal dependencies.</p>
+<p><img alt="Set Transformer Architecture" src="_images/set_transformer_architecture.png" /></p>
+<section id="hyperparameters-optuna-best">
+<h3>Hyperparameters (Optuna Best)<a class="headerlink" href="#hyperparameters-optuna-best" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">OBS_STEPS</span></code></p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LSTM_UNITS</span></code></p></td>
+<td><p>256</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">N_HEADS</span></code></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">N_ST_BLOCKS</span></code></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FF_DIM</span></code></p></td>
+<td><p>128</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DROPOUT</span></code></p></td>
+<td><p>0.378</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LR_INIT</span></code></p></td>
+<td><p>1.68e-3</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LAMBDA_CLS</span></code></p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LAMBDA_REG</span></code></p></td>
+<td><p>0.7</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id3">
+<h3>Results<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Test Top-1</strong></p></td>
+<td><p><strong>54.93 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test Top-3</strong></p></td>
+<td><p><strong>85.47 %</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Test Top-5</strong></p></td>
+<td><p><strong>94.70 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>RSRP MAE</p></td>
+<td><p>5.23 dBm</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id4">
+<h3>Training Curves<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p><img alt="6G Predictive Training Curves" src="_images/6g_training_curves.png" /></p>
+</section>
+<section id="id5">
+<h3>Confusion Matrix<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<p><img alt="6G Predictive Confusion Matrix" src="_images/6g_predictive_confusion_matrix.png" /></p>
+</section>
+<section id="comparison-plot">
+<h3>Comparison Plot<a class="headerlink" href="#comparison-plot" title="Link to this heading"></a></h3>
+<p><img alt="Exp 4 Comparison" src="_images/exp4_comparison.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exp-05-strategic-deepset-context-injection">
+<h2>Exp 05 — Strategic DeepSet (Context Injection)<a class="headerlink" href="#exp-05-strategic-deepset-context-injection" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/05_strategic_deepset.ipynb</span></code><br />
+<strong>Checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/models_deprecated/best_strategic_deepset.keras</span></code><br />
+<strong>Loss:</strong> <code class="docutils literal notranslate"><span class="pre">1.0</span> <span class="pre">×</span> <span class="pre">Focal(γ=2.0)</span> <span class="pre">+</span> <span class="pre">0.5</span> <span class="pre">×</span> <span class="pre">Huber</span></code></p>
+</div></blockquote>
+<p>This experiment injects global contextual state (UE speed, direction cosines, cell load, and one-hot handover class) into the DeepSet aggregation via concatenation. The goal is to make the model context-aware of mobility regime and network state beyond just the RF signal values.</p>
+<p><img alt="Strategic DeepSet Architecture" src="_images/strategic_deepset_architecture.png" /></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Global Context G = [speed, dir_cos, dir_sin, cell_load, ho_class_onehot]  ∈ ℝ^9
+    │
+    ├─ [Global LSTM (32)] → global embedding gₜ ∈ ℝ^32
+    │
+    ├─ [Per-Cell LSTM (64)] → φᵢ ∈ ℝ^64
+    │
+    ├─ [Concat: φᵢ ‖ gₜ] → enriched cell embedding
+    │
+    ├─ [RHO MLP (256 → 128)] → aggregated representation
+    │
+    ├─ [Classifier] → logits ∈ ℝ^K
+    │
+    └─ [RSRP Regression Head]
+</pre></div>
+</div>
+<section id="id6">
+<h3>Results<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Test Top-1</strong></p></td>
+<td><p><strong>51.35 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test Top-3</strong></p></td>
+<td><p><strong>86.68 %</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Test Top-5</strong></p></td>
+<td><p><strong>95.59 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>RSRP MAE</p></td>
+<td><p>4.94 dBm</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id7">
+<h3>Training Curves<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<p><img alt="Strategic DeepSet Training" src="_images/strategic_training_curves.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exp-06-sota-ray-tracing-fine-tune">
+<h2>Exp 06 — SOTA Ray-Tracing Fine-Tune<a class="headerlink" href="#exp-06-sota-ray-tracing-fine-tune" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/06_sota_ray_tracing_finetuning.ipynb</span></code><br />
+<strong>Source model:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_mtl_transformer.keras</span></code><br />
+<strong>Fine-tuned checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_sota_ray_finetuned.keras</span></code></p>
+</div></blockquote>
+<p>This experiment adapts the best hexagonal-data model (MTL Transformer) to the high-fidelity ray-tracing domain using a <strong>progressive unfreezing fine-tuning strategy</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Phase 1 — Head-only</strong> (25 epochs, LR=1e-4): freeze encoder, train classifier head only.</p></li>
+<li><p><strong>Phase 2 — Upper layers</strong> (25 epochs, LR=5e-5): unfreeze upper transformer blocks.</p></li>
+<li><p><strong>Phase 3 — Full model</strong> (15 epochs, LR=1e-6): end-to-end fine-tuning.</p></li>
+</ol>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Base Model (MTL Transformer, frozen encoder)
+    │
+    Phase 1: train Head only
+    Phase 2: unfreeze upper blocks
+    Phase 3: full end-to-end
+    │
+    → Fine-tuned for ray-tracing domain
+</pre></div>
+</div>
+<section id="results-on-ray-tracing-test-split">
+<h3>Results on Ray-Tracing Test Split<a class="headerlink" href="#results-on-ray-tracing-test-split" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Stage</p></th>
+<th class="head"><p>Top-1</p></th>
+<th class="head"><p>Top-3</p></th>
+<th class="head"><p>Top-5</p></th>
+<th class="head"><p>RSRP MAE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Baseline (no FT)</p></td>
+<td><p>21.4 %</p></td>
+<td><p>63.8 %</p></td>
+<td><p>98.3 %</p></td>
+<td><p>8.55 dBm</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Fine-tuned</strong></p></td>
+<td><p><strong>28.1 %</strong></p></td>
+<td><p><strong>72.5 %</strong></p></td>
+<td><p><strong>98.6 %</strong></p></td>
+<td><p><strong>8.11 dBm</strong></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="id8">
+<h3>Training Curves<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p><img alt="Ray Fine-Tune Training Curves" src="_images/ray_finetune_training_curves.png" /></p>
+</section>
+<section id="id9">
+<h3>Confusion Matrix<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<p><img alt="Ray Fine-Tune Confusion Matrix" src="_images/ray_finetune_confusion_matrix.png" /></p>
+</section>
+<section id="occlusion-example">
+<h3>Occlusion Example<a class="headerlink" href="#occlusion-example" title="Link to this heading"></a></h3>
+<p><img alt="Ray Occlusion Analysis" src="_images/ray_occlusion_example.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="exp-07-ray-id-crossformer-sota-production">
+<h2>Exp 07 — Ray-ID CrossFormer ★ SOTA / Production<a class="headerlink" href="#exp-07-ray-id-crossformer-sota-production" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Notebook:</strong> <code class="docutils literal notranslate"><span class="pre">notebooks/modeling/07_ray_id_crossformer.ipynb</span></code><br />
+<strong>Production checkpoint:</strong> <code class="docutils literal notranslate"><span class="pre">models/best_ray_id_crossformer.keras</span></code><br />
+<strong>Deployment target:</strong> NR edge server (MEC)</p>
+</div></blockquote>
+<p>The Ray-ID CrossFormer is the <strong>state-of-the-art production model</strong>. It combines:</p>
+<ul class="simple">
+<li><p><strong>Temporal RF encoding</strong> via GRU (per-cell, shared weights),</p></li>
+<li><p><strong>Cell identity embeddings</strong> (learned from integer cell IDs, vocabulary size = 172),</p></li>
+<li><p><strong>Serving-cell flag</strong> embedding (binary: is this cell the current serving cell?),</p></li>
+<li><p><strong>Masked intra-cell self-attention</strong> (attend over the candidate set),</p></li>
+<li><p><strong>Horizon cross-attention</strong> (cross-attend over the 5 future prediction horizons).</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input:
+  ├─ RF features   (K, T=25, 3)   [RSRP, SINR, Load]
+  ├─ Cell IDs      (K,)            integer cell identifiers
+  └─ Serving flag  (K,)            binary serving-cell indicator
+
+Per-Cell Temporal Encoder:
+  [GRU (96 units, shared weights)] → hᵢ ∈ ℝ^96
+
+Cell Identity Embedding:
+  [Embedding(vocab=172, ID_DIM=32)] → eᵢ ∈ ℝ^32
+
+Serving Embedding:
+  [Embedding(2, 8)] → sᵢ ∈ ℝ^8
+
+Fusion:
+  [Dense(D_MODEL=128)] ← concat(hᵢ, eᵢ, sᵢ)
+
+Intra-Cell Self-Attention:
+  [Multi-Head Self-Attention × 3 blocks, 4 heads, FF=256]  (masked for padding)
+
+Horizon Cross-Attention:
+  [Learnable horizon query vectors Q ∈ ℝ^(H×D)]
+  [Cross-Attention over cell keys/values]
+  → per-horizon logits ∈ ℝ^(H×K)
+
+Output:
+  Softmax probabilities per horizon per cell  →  shape (H=5, K)
+</pre></div>
+</div>
+<section id="id10">
+<h3>Hyperparameters<a class="headerlink" href="#id10" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">D_MODEL</span></code></p></td>
+<td><p>128</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ID_DIM</span></code></p></td>
+<td><p>32</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GRU_UNITS</span></code></p></td>
+<td><p>96</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">N_HEADS</span></code></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FF_DIM</span></code></p></td>
+<td><p>256</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">N_BLOCKS</span></code></p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DROPOUT</span></code></p></td>
+<td><p>0.18</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FOCAL_GAMMA</span></code></p></td>
+<td><p>1.5</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FOCAL_ALPHA</span></code></p></td>
+<td><p>0.75</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LABEL_SMOOTHING</span></code></p></td>
+<td><p>0.01</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BATCH_SIZE</span></code></p></td>
+<td><p>64</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EPOCHS</span></code></p></td>
+<td><p>90</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LR</span></code></p></td>
+<td><p>3e-4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MIN_LR</span></code></p></td>
+<td><p>2e-6</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PATIENCE</span></code></p></td>
+<td><p>14</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="results-on-ray-tracing-domain">
+<h3>Results on Ray-Tracing Domain<a class="headerlink" href="#results-on-ray-tracing-domain" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Split</p></th>
+<th class="head"><p>Top-1</p></th>
+<th class="head"><p>Top-3</p></th>
+<th class="head"><p>Top-5</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Validation</strong></p></td>
+<td><p><strong>59.96 %</strong></p></td>
+<td><p><strong>90.86 %</strong></p></td>
+<td><p><strong>98.80 %</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Test</strong></p></td>
+<td><p><strong>57.60 %</strong></p></td>
+<td><p><strong>90.87 %</strong></p></td>
+<td><p><strong>98.87 %</strong></p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><strong>Top-3 accuracy (90.87 %) is the primary production KPI</strong> — in a live NR network, the RAN can negotiate among the top-3 predicted candidates using X2/Xn signaling, maximising flexibility while dramatically reducing RLF risk. This is the standard operational metric in edge-AI handover pipelines.</p>
+</div></blockquote>
+</section>
+<section id="id11">
+<h3>Training Curves<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<p><img alt="Ray-ID CrossFormer Training Curves" src="_images/ray_id_crossformer_training_curves.png" /></p>
+</section>
+<section id="id12">
+<h3>Confusion Matrix<a class="headerlink" href="#id12" title="Link to this heading"></a></h3>
+<p><img alt="Ray-ID CrossFormer Confusion Matrix" src="_images/ray_id_crossformer_confusion_matrix.png" /></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="model-comparison-summary">
+<h2>Model Comparison Summary<a class="headerlink" href="#model-comparison-summary" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Task</p></th>
+<th class="head"><p>Top-1</p></th>
+<th class="head"><p>Top-3</p></th>
+<th class="head"><p>Top-5</p></th>
+<th class="head"><p>RSRP MAE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Temporal DeepSet (Exp 01)</p></td>
+<td><p><strong>Single-step (baseline only)</strong></p></td>
+<td><p>99.82 %</p></td>
+<td><p>100.0 %</p></td>
+<td><p>100.0 %</p></td>
+<td><p>—</p></td>
+</tr>
+<tr class="row-odd"><td><p>SpatioTemporal DeepSet (Exp 02)</p></td>
+<td><p>5-step</p></td>
+<td><p>56.13 % (avg)</p></td>
+<td><p>—</p></td>
+<td><p>—</p></td>
+<td><p>5.56 dBm</p></td>
+</tr>
+<tr class="row-even"><td><p>MTL Transformer (Exp 03)</p></td>
+<td><p>5-step</p></td>
+<td><p>55.79 %</p></td>
+<td><p>86.02 %</p></td>
+<td><p>94.99 %</p></td>
+<td><p>4.20 dBm</p></td>
+</tr>
+<tr class="row-odd"><td><p>6G Predictive (Exp 04)</p></td>
+<td><p>5-step</p></td>
+<td><p>54.93 %</p></td>
+<td><p>85.47 %</p></td>
+<td><p>94.70 %</p></td>
+<td><p>5.23 dBm</p></td>
+</tr>
+<tr class="row-even"><td><p>Strategic DeepSet (Exp 05)</p></td>
+<td><p>5-step</p></td>
+<td><p>51.35 %</p></td>
+<td><p>86.68 %</p></td>
+<td><p>95.59 %</p></td>
+<td><p>4.94 dBm</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ray FT (Exp 06)</p></td>
+<td><p>5-step (ray domain)</p></td>
+<td><p>28.12 %</p></td>
+<td><p>72.55 %</p></td>
+<td><p>98.57 %</p></td>
+<td><p>8.11 dBm</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Ray-ID CrossFormer (Exp 07) ★</strong></p></td>
+<td><p><strong>5-step (ray domain)</strong></p></td>
+<td><p><strong>57.60 %</strong></p></td>
+<td><p><strong>90.87 %</strong></p></td>
+<td><p><strong>98.87 %</strong></p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><strong>Note on Top-3 as Production KPI:</strong> In real NR deployments, the network selects from the top-3 candidate cells based on live X2/Xn signaling, QoS constraints, and load balancing. A Top-3 accuracy of <strong>90.87 %</strong> means that in 9 out of 10 handover events, the optimal target cell is within the model’s top-3 recommendations — ensuring maximum operational flexibility and near-elimination of blind-handover failures.</p>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dataset.html" class="btn btn-neutral float-left" title="Dataset Documentation: Geo-Context Aware Predictive Handover Dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="training.html" class="btn btn-neutral float-right" title="Training Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, WASSIM MCHICHI, AOUTMANI MOHAMMED AMIN.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
