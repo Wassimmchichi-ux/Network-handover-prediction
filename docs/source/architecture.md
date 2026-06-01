@@ -250,7 +250,7 @@ Global Context G = [speed, dir_cos, dir_sin, cell_load, ho_class_onehot]  ∈ �
     │
     └─ [RSRP Regression Head]
 ```
-
+*Note*: Since the handover class is directly derived from the target information, it introduces a form of label leakage. Consequently, the reported results should be interpreted as a benchmark rather than a realistic deployment scenario, motivating the use of a multi-stage prediction framework.
 ### Results
 
 | Metric | Value |
