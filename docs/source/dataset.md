@@ -19,7 +19,7 @@ To anchor our simulation in reality, we extracted real tower location data from 
 
 ### 2.2. Cell-Load Aware UAV Drone Control System
 
-In addition to ground users, our dataset includes simulated Unmanned Aerial Vehicles (UAVs/Drones) behaving as dynamic users/relays. Their movement is not random; it is governed by an automated operational loop:
+In addition to ground users, our dataset includes simulated Unmanned Aerial Vehicles (UAVs/Drones) behaving as dynamic antennas. Their movement is not random; it is governed by an automated operational loop:
 
 * **Weighted Centroid Guidance:** Drones track the network's operational conditions. The target trajectory coordinates are determined by calculating a geometric centroid weighted by the real-time **dual-layer cell load** (combining LTE anchor and 5G active resource utilization) of surrounding ground antennas.
 * **Distance Penalization:** The control loop applies a penalty function relative to the distance between the drone and active antennas to avoid extreme, energy-inefficient trajectories.
