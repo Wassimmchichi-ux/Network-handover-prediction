@@ -263,7 +263,8 @@ conda run -n tda-handover python -m notebooks.modeling.07_ray_id_crossformer
 | **Top-1 Accuracy** | $\Pr[\hat{y}_1 = y]$ | Exact match — hardest metric |
 | **Top-3 Accuracy** | $\Pr[y \in \{\hat{y}_1, \hat{y}_2, \hat{y}_3\}]$ | **Primary production KPI** |
 | **Top-5 Accuracy** | $\Pr[y \in \text{top-5}]$ | Coverage ceiling |
-| RSRP MAE (dBm) | $\mathbb{E}[|\hat{r}-r|]$ | Regression quality (auxiliary) |
+| RSRP MAE (dBm) | $E[|\hat{r}-r|]$ | Regression quality (auxiliary) |
+
 ### 6.2 Why Top-3 Is the Primary Production Metric
 
 In a live 5G NR deployment, the edge-AI inference does not issue a single hard handover command. Instead, it returns a **ranked candidate list** to the RAN controller (via X2/Xn interface), which then selects the best reachable candidate based on:
