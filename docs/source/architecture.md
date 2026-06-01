@@ -32,7 +32,7 @@ Exp 01 — Temporal DeepSet (baseline, single-step)
 
 > **Notebook:** `notebooks/modeling/01_temporal_deepset.ipynb`  
 > **Checkpoint:** `models/best_temporal_deepset.keras`  
-> **⚠️ Important:** This is a **single-step (current-instant) cell selection** experiment — it predicts the best cell at time *t*, not a future horizon. All subsequent experiments (02–07) target 5-step future prediction for production use.
+> **⚠️ Important:** This is a **single-step cell selection** experiment — it predicts the best cell at time *t+1*, not a future horizon. All subsequent experiments (02–07) target 5-step future prediction for production use.
 
 ### Architecture
 
